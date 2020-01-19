@@ -1,0 +1,25 @@
+git add 
+git commit -m "备注信息"
+git push origin master
+
+$ git pull origin master 将远程仓库里面的项目拉下来
+
+$ dir  查看有哪些文件夹
+
+$ git rm -r --cached target  删除target文件夹
+$ git commit -m '删除了target'  提交,添加操作说明
+
+
+
+dustin_kostka@yahoo.com:kostka44
+adrianfrancisco102@gmail.com:Kalbo123!
+tichman27@gmail.com:Codelyoko1!
+probedee@hotmail.com:Memegod99!
+mahmutemrebasar@hotmail.com:Yanki2001!
+
+
+
+
+
+	 
+
