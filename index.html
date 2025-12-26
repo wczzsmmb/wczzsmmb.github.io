@@ -26,7 +26,7 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        /* 交互设计：悬停下划线 */
+        /* 交互样式：悬停显示下划线 */
         a {
             text-decoration: none;
             border-bottom: 1px solid transparent; 
@@ -46,15 +46,13 @@
 </head>
 <body class="flex flex-col min-h-screen px-8 sm:px-16 relative font-serif">
 
-    <!-- 核心内容容器：使用 Flex 布局让整体垂直居中 -->
-    <!-- 视觉修正：-mt-20 让重心稍微偏上，符合视觉习惯，避免沉底 -->
+    <!-- 主体布局容器 -->
     <main class="flex-grow flex flex-col justify-center -mt-20">
         
-        <!-- 依然保持 Header 的结构：左侧名字，右侧联系方式 -->
-        <!-- 加上 border-b 作为视觉分割线，增加“压得住”的分量感 -->
+        <!-- 核心信息区域 -->
         <div class="w-full max-w-5xl mx-auto border-b border-gray-200 pb-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8">
             
-            <!-- 左侧区域：名字与基础信息 -->
+            <!-- 个人身份标识 -->
             <div class="space-y-4">
                 <h1 class="text-6xl sm:text-7xl font-bold tracking-tight text-black leading-none">
                     王传钊
@@ -67,8 +65,7 @@
                 </div>
             </div>
 
-            <!-- 右侧区域：联系方式 (保持原结构) -->
-            <!-- 去掉了 GitHub，只保留最重要的两个联系方式 -->
+            <!-- 联系方式列表 -->
             <div class="flex flex-col items-start sm:items-end gap-3 text-base text-gray-800 font-mono">
                 <a href="mailto:wczzsmmb@163.com">
                     wczzsmmb@163.com
@@ -80,21 +77,19 @@
 
         </div>
 
-
-
     </main>
 
-    <!-- 底部 Footer：添加备案信息，手机端垂直居中，电脑端左右对齐 -->
+    <!-- 底部备案信息 -->
     <footer class="absolute bottom-6 left-0 right-0 px-8 sm:bottom-12 sm:px-16 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-2 text-[10px] font-mono text-gray-300 uppercase tracking-widest select-none">
         
-        <!-- ICP 备案 -->
+        <!-- ICP 备案号 -->
         <div class="order-2 sm:order-1">
             <a href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-gray-500 transition-colors">
                 鲁ICP备2025203999号-1
             </a>
         </div>
 
-        <!-- 公网安备 -->
+        <!-- 公安联网备案 -->
         <div class="order-1 sm:order-2">
             <a href="https://beian.mps.gov.cn/#/query/webSearch?code=37130202372964" rel="noreferrer" target="_blank" class="hover:text-gray-500 transition-colors">
                 鲁公网安备37130202372964号
