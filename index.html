@@ -13,7 +13,8 @@
                 extend: {
                     fontFamily: {
                         serif: ['"Noto Serif SC"', '"Songti SC"', 'SimSun', 'serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
+                        // 将 Monaco 放在首位，如果系统没有（如 Windows），则回退到 JetBrains Mono
+                        mono: ['Monaco', '"JetBrains Mono"', 'Consolas', 'monospace'],
                     },
                 }
             }
