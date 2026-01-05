@@ -176,10 +176,18 @@
     </div>
 
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
+        const MIN_LOADING_MS = 1000;
+        const EXTRA_AFTER_LOAD_MS = 1000;
+        const startTime = Date.now();
+
+        window.addEventListener("load", () => {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
             setTimeout(() => {
-                document.body.classList.remove("is-loading");
-            }, 1000);
+                setTimeout(() => {
+                    document.body.classList.remove("is-loading");
+                }, EXTRA_AFTER_LOAD_MS);
+            }, remaining);
         });
     </script>
 </body>
