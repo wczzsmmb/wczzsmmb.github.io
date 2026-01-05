@@ -29,7 +29,7 @@
 
         #page {
             opacity: 1;
-            transition: opacity 0.45s ease;
+            transition: opacity 0.9s ease;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -52,7 +52,7 @@
             justify-content: center;
             background: #e6e6e6;
             z-index: 50;
-            transition: opacity 0.45s ease, visibility 0.45s ease;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -176,18 +176,11 @@
     </div>
 
     <script>
-        const MIN_LOADING_MS = 1000;
         const EXTRA_AFTER_LOAD_MS = 1000;
-        const startTime = Date.now();
-
         window.addEventListener("load", () => {
-            const elapsed = Date.now() - startTime;
-            const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
             setTimeout(() => {
-                setTimeout(() => {
-                    document.body.classList.remove("is-loading");
-                }, EXTRA_AFTER_LOAD_MS);
-            }, remaining);
+                document.body.classList.remove("is-loading");
+            }, EXTRA_AFTER_LOAD_MS);
         });
     </script>
 </body>
