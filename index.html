@@ -4,23 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>王传钊 Wang Chuanzhao</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['"Noto Serif SC"', '"Songti SC"', 'SimSun', 'serif'],
-                        // 将 Monaco 放在首位，如果系统没有（如 Windows），则回退到 JetBrains Mono
-                        mono: ['Monaco', '"JetBrains Mono"', 'Consolas', 'monospace'],
-                    },
-                }
-            }
-        }
-    </script>
     <style>
+        :root {
+            --c-bg: #e6e6e6;
+            --c-text: #2a2a2a;
+            --c-sub: #555555;
+        }
+
         body {
             background-color: #ffffff;
             color: #1a1a1a;
@@ -50,7 +40,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #e6e6e6;
+            background: var(--c-bg);
             z-index: 50;
             transition: opacity 1.2s ease, visibility 1.2s ease;
             opacity: 0;
@@ -68,7 +58,7 @@
             display: inline-flex;
             align-items: baseline;
             gap: 14px;
-            color: #2a2a2a;
+            color: var(--c-text);
             font-size: clamp(18px, 2.6vw, 28px);
             letter-spacing: 0.2px;
         }
@@ -79,7 +69,7 @@
 
         .loader span {
             font-weight: 300;
-            color: #555555;
+            color: var(--c-sub);
         }
         
         /* 交互样式：悬停显示下划线 */
@@ -99,6 +89,7 @@
             color: #000;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body class="flex flex-col min-h-screen px-8 sm:px-16 relative font-serif">
     <script>
@@ -175,6 +166,20 @@
 
     </div>
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', '"Songti SC"', 'SimSun', 'serif'],
+                        // 将 Monaco 放在首位，如果系统没有（如 Windows），则回退到 JetBrains Mono
+                        mono: ['Monaco', '"JetBrains Mono"', 'Consolas', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         const EXTRA_AFTER_LOAD_MS = 1000;
         window.addEventListener("load", () => {
