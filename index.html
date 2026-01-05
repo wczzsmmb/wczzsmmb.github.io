@@ -26,6 +26,61 @@
             color: #1a1a1a;
             -webkit-font-smoothing: antialiased;
         }
+
+        #page {
+            opacity: 1;
+            transition: opacity 0.45s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            flex: 1 1 auto;
+        }
+
+        body.is-loading {
+            overflow: hidden;
+        }
+
+        body.is-loading #page {
+            opacity: 0;
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e6e6e6;
+            z-index: 50;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        body.is-loading #loader {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .loader {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 14px;
+            color: #2a2a2a;
+            font-size: clamp(18px, 2.6vw, 28px);
+            letter-spacing: 0.2px;
+        }
+
+        .loader strong {
+            font-weight: 700;
+        }
+
+        .loader span {
+            font-weight: 300;
+            color: #555555;
+        }
         
         /* 交互样式：悬停显示下划线 */
         a {
@@ -46,6 +101,17 @@
     </style>
 </head>
 <body class="flex flex-col min-h-screen px-8 sm:px-16 relative font-serif">
+    <script>
+        document.body.classList.add("is-loading");
+    </script>
+    <div id="loader" aria-hidden="true">
+        <div class="loader" role="status" aria-label="Loading">
+            <strong>Wang Chuanzhao</strong>
+            <span>Portfolio</span>
+        </div>
+    </div>
+
+    <div id="page">
 
     <!-- 主体布局容器 -->
     <main class="flex-grow flex flex-col justify-center -mt-20">
@@ -107,5 +173,14 @@
 
     </footer>
 
+    </div>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.body.classList.remove("is-loading");
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
