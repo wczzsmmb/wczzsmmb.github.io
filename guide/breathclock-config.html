@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Breathclock Config</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "JetBrains Mono", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      background: #f7f7f4;
+      min-height: 100vh;
+    }
+
+    .breathclock {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 9999;
+      user-select: none;
+      -webkit-user-select: none;
+      font-family: Monaco, "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      color: #334155;
+      --breathclock-color: #10b981;
+    }
+
+    .breathclock__panel {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .breathclock__dot {
+      position: relative;
+      display: flex;
+      height: 8px;
+      width: 8px;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .breathclock__dot:focus-visible {
+      outline: 2px solid rgba(16, 185, 129, 0.55);
+      outline-offset: 3px;
+    }
+
+    @keyframes breathclock-ping {
+      75%,
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .breathclock__dot-ring {
+      position: absolute;
+      inset: 0;
+      display: inline-flex;
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      background: var(--breathclock-color);
+      opacity: 0.55;
+      animation: breathclock-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .breathclock__dot-core {
+      position: relative;
+      display: inline-flex;
+      height: 8px;
+      width: 8px;
+      border-radius: 999px;
+      background: var(--breathclock-color);
+    }
+
+    .breathclock__content {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .breathclock__btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      line-height: 1.1;
+    }
+
+    .breathclock__btn:active {
+      transform: scale(0.99);
+    }
+
+    .breathclock__time {
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+
+    .breathclock__date {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(148, 163, 184, 1);
+      transition: color 0.2s ease;
+    }
+
+    .clay-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .clay-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .clay-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(231, 231, 231, 0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    .clay-card {
+      position: relative;
+      width: min(92vw, 440px);
+      max-height: min(90vh, 720px);
+      overflow: auto;
+      background: #f6f1ea;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 10px 10px 24px rgba(0, 0, 0, 0.12), inset -6px -6px 12px rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      z-index: 1;
+    }
+
+    .clay-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: #2f2f2f;
+      font-size: 14px;
+    }
+
+    .clay-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 0;
+      background: #efe6db;
+      box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.7), inset 4px 4px 8px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      font-weight: 700;
+      color: #444;
+    }
+
+    .clay-section {
+      background: #f2e7dc;
+      border-radius: 18px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.7), inset 4px 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .clay-section__title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #5b4c3b;
+      margin-bottom: 10px;
+    }
+
+    .clay-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .clay-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .clay-pill-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .clay-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 0;
+      background: #f7efe6;
+      box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.7), inset 3px 3px 6px rgba(0, 0, 0, 0.08);
+      font-size: 12px;
+      color: #4a3c2c;
+      cursor: pointer;
+    }
+
+    .clay-pill.active {
+      background: #fbd2d2;
+      color: #7a2531;
+    }
+
+    .clay-input {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 8px 10px;
+      background: #f7efe6;
+      box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.7), inset 3px 3px 6px rgba(0, 0, 0, 0.08);
+      font-size: 12px;
+      color: #3f3427;
+    }
+
+    .clay-color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .clay-color-preview {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.7), inset 3px 3px 6px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .clay-presets {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .clay-preset {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      background: var(--color);
+      box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.6), inset 3px 3px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .clay-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #4a3c2c;
+    }
+
+    .clay-toggle input {
+      width: 16px;
+      height: 16px;
+      accent-color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+  <div class="breathclock" id="breathclock" role="group" aria-label="极简呼吸时钟">
+    <div class="breathclock__panel">
+      <button class="breathclock__dot" id="breathclock-dot" type="button" aria-label="呼吸灯">
+        <span class="breathclock__dot-ring" aria-hidden="true"></span>
+        <span class="breathclock__dot-core" aria-hidden="true"></span>
+      </button>
+      <div class="breathclock__content">
+        <button class="breathclock__btn breathclock__time" id="breathclock-time" type="button">00:00:00</button>
+        <button class="breathclock__btn breathclock__date" id="breathclock-date" type="button">正在加载日期...</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="clay-modal" id="breathclock-settings" aria-hidden="true">
+    <div class="clay-modal__backdrop" data-close></div>
+    <div class="clay-card" role="dialog" aria-modal="true" aria-label="呼吸时钟配置">
+      <div class="clay-card__header">
+        <span>呼吸时钟配置</span>
+        <button class="clay-close" type="button" data-close aria-label="关闭">×</button>
+      </div>
+      <div class="clay-section">
+        <div class="clay-section__title">呼吸灯颜色</div>
+        <div class="clay-color-row">
+          <div class="clay-color-preview" id="breathclock-color-preview" aria-hidden="true"></div>
+          <input class="clay-input" id="breathclock-color-input" type="text" maxlength="7" placeholder="#10b981"/>
+        </div>
+        <div class="clay-presets" id="breathclock-color-presets">
+          <button class="clay-preset" type="button" style="--color:#34d399" data-color="#34d399"></button>
+          <button class="clay-preset" type="button" style="--color:#60a5fa" data-color="#60a5fa"></button>
+          <button class="clay-preset" type="button" style="--color:#f59e0b" data-color="#f59e0b"></button>
+          <button class="clay-preset" type="button" style="--color:#f472b6" data-color="#f472b6"></button>
+          <button class="clay-preset" type="button" style="--color:#a78bfa" data-color="#a78bfa"></button>
+          <button class="clay-preset" type="button" style="--color:#22c55e" data-color="#22c55e"></button>
+        </div>
+      </div>
+      <div class="clay-section">
+        <div class="clay-section__title">时间设置</div>
+        <div class="clay-row">
+          <span>时间格式</span>
+          <div class="clay-pill-group" id="breathclock-format">
+            <button class="clay-pill" type="button" data-format="24">24h</button>
+            <button class="clay-pill" type="button" data-format="12">12h</button>
+          </div>
+        </div>
+        <label class="clay-toggle">
+          <input id="breathclock-seconds" type="checkbox"/>
+          显示秒数
+        </label>
+      </div>
+      <div class="clay-section">
+        <div class="clay-section__title">显示模式</div>
+        <div class="clay-row">
+          <span>模式</span>
+          <div class="clay-pill-group" id="breathclock-mode">
+            <button class="clay-pill" type="button" data-mode="clock">时钟</button>
+            <button class="clay-pill" type="button" data-mode="countdown">倒计时</button>
+          </div>
+        </div>
+        <div class="clay-row" id="breathclock-countdown-type-row">
+          <span>倒计时类型</span>
+          <div class="clay-pill-group" id="breathclock-countdown-type">
+            <button class="clay-pill" type="button" data-type="daily">每日到点</button>
+            <button class="clay-pill" type="button" data-type="date">指定日期</button>
+          </div>
+        </div>
+        <div class="clay-row" id="breathclock-daily-row">
+          <span>每日到点</span>
+          <input class="clay-input" id="breathclock-daily-time" type="time" value="18:00"/>
+        </div>
+        <div class="clay-row" id="breathclock-date-row">
+          <span>指定日期</span>
+          <input class="clay-input" id="breathclock-target-date" type="datetime-local"/>
+        </div>
+        <label class="clay-toggle" id="breathclock-loop-row">
+          <input id="breathclock-loop" type="checkbox"/>
+          指定日期循环
+        </label>
+      </div>
+      <div class="clay-section">
+        <div class="clay-section__title">日期格式</div>
+        <select class="clay-input" id="breathclock-date-format">
+          <option value="zh-short">短格式（2025/01/14 周三）</option>
+          <option value="zh-long">长格式（2025年1月14日 星期三）</option>
+          <option value="numeric">数字（2025-01-14）</option>
+          <option value="en-short">英文短（Jan 14 Wed）</option>
+          <option value="en-long">英文长（Wednesday, January 14）</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const clock = document.getElementById('breathclock');
+      const modal = document.getElementById('breathclock-settings');
+      if (!clock || !modal) return;
+
+      const els = {
+        panel: clock.querySelector('.breathclock__panel'),
+        dot: document.getElementById('breathclock-dot'),
+        time: document.getElementById('breathclock-time'),
+        date: document.getElementById('breathclock-date'),
+        preview: document.getElementById('breathclock-color-preview'),
+        colorInput: document.getElementById('breathclock-color-input'),
+        presets: document.getElementById('breathclock-color-presets'),
+        formatGroup: document.getElementById('breathclock-format'),
+        secondsToggle: document.getElementById('breathclock-seconds'),
+        modeGroup: document.getElementById('breathclock-mode'),
+        countdownTypeGroup: document.getElementById('breathclock-countdown-type'),
+        countdownTypeRow: document.getElementById('breathclock-countdown-type-row'),
+        dailyRow: document.getElementById('breathclock-daily-row'),
+        dailyInput: document.getElementById('breathclock-daily-time'),
+        dateRow: document.getElementById('breathclock-date-row'),
+        dateInput: document.getElementById('breathclock-target-date'),
+        loopRow: document.getElementById('breathclock-loop-row'),
+        loopToggle: document.getElementById('breathclock-loop'),
+        dateFormat: document.getElementById('breathclock-date-format')
+      };
+
+      const state = {
+        color: '#10b981',
+        is24Hour: true,
+        showSeconds: true,
+        mode: 'clock',
+        countdownType: 'daily',
+        dailyTime: '18:00',
+        targetDate: '',
+        loopDate: false,
+        dateFormat: 'en-short'
+      };
+
+      if (!els.dot || !els.time || !els.date) return;
+
+      const pad = (num) => String(num).padStart(2, '0');
+      let timer = null;
+
+      const normalizeHex = (value) => {
+        if (!value) return '';
+        let hex = value.trim();
+        if (!hex.startsWith('#')) hex = `#${hex}`;
+        if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return '';
+        return hex.toLowerCase();
+      };
+
+      const setColor = (hex) => {
+        const normalized = normalizeHex(hex);
+        if (!normalized) return;
+        state.color = normalized;
+        clock.style.setProperty('--breathclock-color', normalized);
+        if (els.preview) els.preview.style.background = normalized;
+        if (els.colorInput && els.colorInput.value !== normalized) {
+          els.colorInput.value = normalized;
+        }
+      };
+
+      const setActive = (group, key, value) => {
+        if (!group) return;
+        group.querySelectorAll('.clay-pill').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset[key] === value);
+        });
+      };
+
+      const syncVisibility = () => {
+        const showCountdown = state.mode === 'countdown';
+        if (els.countdownTypeRow) els.countdownTypeRow.style.display = showCountdown ? '' : 'none';
+        if (els.dailyRow) els.dailyRow.style.display = showCountdown && state.countdownType === 'daily' ? '' : 'none';
+        if (els.dateRow) els.dateRow.style.display = showCountdown && state.countdownType === 'date' ? '' : 'none';
+        if (els.loopRow) els.loopRow.style.display = showCountdown && state.countdownType === 'date' ? '' : 'none';
+      };
+
+      const formatDate = (now) => {
+        switch (state.dateFormat) {
+          case 'zh-short': {
+            const opt = { year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' };
+            return now.toLocaleDateString('zh-CN', opt).replace(/\\//g, '.');
+          }
+          case 'zh-long': {
+            const opt = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            return now.toLocaleDateString('zh-CN', opt);
+          }
+          case 'numeric': {
+            const y = now.getFullYear();
+            const m = pad(now.getMonth() + 1);
+            const d = pad(now.getDate());
+            return `${y}-${m}-${d}`;
+          }
+          case 'en-long': {
+            const opt = { weekday: 'long', month: 'long', day: 'numeric' };
+            return now.toLocaleDateString('en-US', opt);
+          }
+          case 'en-short':
+          default: {
+            const opt = { month: 'short', day: 'numeric', weekday: 'short' };
+            return now.toLocaleDateString('en-US', opt);
+          }
+        }
+      };
+
+      const getDailyTarget = (now) => {
+        const [h, m] = state.dailyTime.split(':').map(Number);
+        if (!Number.isFinite(h) || !Number.isFinite(m)) return null;
+        const target = new Date(now);
+        target.setHours(h, m, 0, 0);
+        if (target <= now) target.setDate(target.getDate() + 1);
+        return target;
+      };
+
+      const getDateTarget = (now) => {
+        if (!state.targetDate) return null;
+        const target = new Date(state.targetDate);
+        if (Number.isNaN(target.getTime())) return null;
+        if (state.loopDate) {
+          while (target <= now) {
+            target.setFullYear(target.getFullYear() + 1);
+          }
+        }
+        return target;
+      };
+
+      const render = () => {
+        const now = new Date();
+        if (state.mode === 'clock') {
+          let hours = now.getHours();
+          const minutes = pad(now.getMinutes());
+          const seconds = pad(now.getSeconds());
+
+          let ampm = '';
+          if (!state.is24Hour) {
+            ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+          }
+
+          const formattedHours = pad(hours);
+          let timeString = `${formattedHours}:${minutes}`;
+          if (state.showSeconds) timeString += `:${seconds}`;
+          if (els.time.textContent !== timeString) els.time.textContent = timeString;
+
+          const dateString = formatDate(now);
+          if (els.date.textContent !== dateString) els.date.textContent = dateString;
+
+          const dotLabel = state.is24Hour ? '当前24小时制' : `当前12小时制（${ampm}）`;
+          els.dot.setAttribute('aria-label', dotLabel);
+          els.dot.title = dotLabel;
+          return;
+        }
+
+        const target = state.countdownType === 'daily' ? getDailyTarget(now) : getDateTarget(now);
+        if (!target) {
+          els.time.textContent = state.showSeconds ? '--:--:--' : '--:--';
+          els.date.textContent = '请设置倒计时';
+          return;
+        }
+
+        let diff = target.getTime() - now.getTime();
+        if (diff < 0) diff = 0;
+        const totalSeconds = Math.floor(diff / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        let timeString = `${pad(hours)}:${pad(minutes)}`;
+        if (state.showSeconds) timeString += `:${pad(seconds)}`;
+        els.time.textContent = timeString;
+
+        if (state.countdownType === 'daily') {
+          els.date.textContent = `每日 ${state.dailyTime}`;
+        } else {
+          const targetText = state.targetDate ? state.targetDate.replace('T', ' ') : '';
+          els.date.textContent = targetText ? `目标 ${targetText}` : '设置目标日期';
+        }
+      };
+
+      const schedule = () => {
+        if (timer) clearTimeout(timer);
+        render();
+        const now = new Date();
+        const ms = now.getMilliseconds();
+        const delay = state.showSeconds || state.mode === 'countdown'
+          ? (1000 - ms)
+          : ((60 - now.getSeconds()) * 1000 - ms);
+        timer = setTimeout(schedule, Math.max(50, delay));
+      };
+
+      const openModal = () => {
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeModal = () => {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+
+      const bindModal = () => {
+        modal.querySelectorAll('[data-close]').forEach((btn) => {
+          btn.addEventListener('click', closeModal);
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeModal();
+        });
+      };
+
+      const bindControls = () => {
+        if (els.presets) {
+          els.presets.addEventListener('click', (e) => {
+            const btn = e.target.closest('.clay-preset');
+            if (!btn) return;
+            setColor(btn.dataset.color);
+          });
+        }
+
+        if (els.colorInput) {
+          els.colorInput.addEventListener('change', (e) => {
+            setColor(e.target.value);
+          });
+        }
+
+        if (els.formatGroup) {
+          els.formatGroup.addEventListener('click', (e) => {
+            const btn = e.target.closest('.clay-pill');
+            if (!btn) return;
+            state.is24Hour = btn.dataset.format === '24';
+            setActive(els.formatGroup, 'format', btn.dataset.format);
+            render();
+          });
+        }
+
+        if (els.secondsToggle) {
+          els.secondsToggle.addEventListener('change', (e) => {
+            state.showSeconds = e.target.checked;
+            schedule();
+          });
+        }
+
+        if (els.modeGroup) {
+          els.modeGroup.addEventListener('click', (e) => {
+            const btn = e.target.closest('.clay-pill');
+            if (!btn) return;
+            state.mode = btn.dataset.mode;
+            setActive(els.modeGroup, 'mode', state.mode);
+            syncVisibility();
+            schedule();
+          });
+        }
+
+        if (els.countdownTypeGroup) {
+          els.countdownTypeGroup.addEventListener('click', (e) => {
+            const btn = e.target.closest('.clay-pill');
+            if (!btn) return;
+            state.countdownType = btn.dataset.type;
+            setActive(els.countdownTypeGroup, 'type', state.countdownType);
+            syncVisibility();
+            render();
+          });
+        }
+
+        if (els.dailyInput) {
+          els.dailyInput.addEventListener('change', (e) => {
+            state.dailyTime = e.target.value || '18:00';
+            render();
+          });
+        }
+
+        if (els.dateInput) {
+          els.dateInput.addEventListener('change', (e) => {
+            state.targetDate = e.target.value;
+            render();
+          });
+        }
+
+        if (els.loopToggle) {
+          els.loopToggle.addEventListener('change', (e) => {
+            state.loopDate = e.target.checked;
+            render();
+          });
+        }
+
+        if (els.dateFormat) {
+          els.dateFormat.addEventListener('change', (e) => {
+            state.dateFormat = e.target.value;
+            render();
+          });
+        }
+      };
+
+      const syncUI = () => {
+        setColor(state.color);
+        if (els.secondsToggle) els.secondsToggle.checked = state.showSeconds;
+        if (els.dailyInput) els.dailyInput.value = state.dailyTime;
+        if (els.dateInput) els.dateInput.value = state.targetDate;
+        if (els.loopToggle) els.loopToggle.checked = state.loopDate;
+        if (els.dateFormat) els.dateFormat.value = state.dateFormat;
+        setActive(els.formatGroup, 'format', state.is24Hour ? '24' : '12');
+        setActive(els.modeGroup, 'mode', state.mode);
+        setActive(els.countdownTypeGroup, 'type', state.countdownType);
+        syncVisibility();
+      };
+
+      if (els.panel) {
+        els.panel.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal();
+        });
+      }
+
+      bindModal();
+      bindControls();
+      syncUI();
+      schedule();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width" name="viewport"/>
+  <meta content="https://bento.me/" property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="Bento - Show everything you are, create and sell." property="og:image:alt"/>
+  <meta content="image/jpeg" property="og:image:type"/>
+  <meta content="en_US" property="og:locale"/>
+  <meta content="Bento" property="og:site_name"/>
+  <title>Yiyang</title>
+  <meta content="index,follow" name="robots"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="Yiyang" property="og:title"/>
+  <meta content="どうぞ 🍱 making something happen" property="og:description"/>
+  <meta content="1200" property="og:image:width"/>
+  <meta content="630" property="og:image:height"/>
+  <meta content="https://api.bento.me/v1/og/yiyang?v=491113" property="og:image"/>
+  <meta content="#768CFF" name="msapplication-TileColor"/>
+  <meta content="#ffffff" name="theme-color"/>
+  <meta content="no-referrer" name="referrer"/>
+  <meta content="default-src 'self'; font-src 'self' https: data:; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; media-src 'self' data:; script-src 'self' 'unsafe-inline' data: https://suggestion.baidu.com https://sp0.baidu.com https://suggestqueries.google.com https://api.bing.com; connect-src 'self' https://suggestion.baidu.com https://sp0.baidu.com https://suggestqueries.google.com https://api.bing.com https://api-prod.wallstreetcn.com https://v2.xxapi.cn; object-src 'self' data:; frame-src 'self' data:;" http-equiv="content-security-policy"/>
+  <link href="assets/images/image_1.gif" rel="shortcut icon"/>
+  <link href="https://bento.me/yiyang" rel="canonical"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+    .breathclock {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 9999;
+      user-select: none;
+      -webkit-user-select: none;
+      font-family: Monaco, "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      color: #334155;
+      --breathclock-color: #10b981;
+    }
+
+    .breathclock__panel {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .breathclock__dot {
+      position: relative;
+      display: flex;
+      height: 8px;
+      width: 8px;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .breathclock__dot:focus-visible {
+      outline: 2px solid rgba(16, 185, 129, 0.55);
+      outline-offset: 3px;
+    }
+
+    @keyframes breathclock-ping {
+      75%,
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .breathclock__dot-ring {
+      position: absolute;
+      inset: 0;
+      display: inline-flex;
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      background: var(--breathclock-color);
+      opacity: 0.55;
+      animation: breathclock-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .breathclock__dot-core {
+      position: relative;
+      display: inline-flex;
+      height: 8px;
+      width: 8px;
+      border-radius: 999px;
+      background: var(--breathclock-color);
+    }
+
+    .breathclock__panel {
+      cursor: pointer;
+    }
+
+    .picker-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(231, 231, 231, 0.6);
+      backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      opacity: 1;
+    }
+
+    .picker-modal.active {
+      display: flex;
+    }
+
+    .picker-card {
+      background: #f0f2f5;
+      width: 95%;
+      max-width: 400px;
+      padding: 1.2rem;
+      border-radius: 40px;
+      box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    .picker-card::-webkit-scrollbar {
+      width: 0;
+    }
+
+    .color-board {
+      width: 100%;
+      height: 160px;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .board-hue {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    .board-saturation {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: linear-gradient(to right, #fff, transparent);
+    }
+
+    .board-brightness {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: linear-gradient(to top, #000, transparent);
+    }
+
+    .picker-thumb {
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border-radius: 41% 59% 45% 55% / 58% 44% 56% 42%;
+      position: absolute;
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.4),
+        2px 2px 4px rgba(255, 255, 255, 0.5);
+      border: 2px solid #fff;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .preview-circle {
+      width: 48px;
+      height: 48px;
+      background-color: var(--breath-color, #3b82f6);
+      border-radius: 41% 59% 45% 55% / 58% 44% 56% 42%;
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.4),
+        2px 2px 4px rgba(255, 255, 255, 0.5);
+      flex-shrink: 0;
+      transition: background-color 0.1s;
+    }
+
+    .clay-input-group {
+      flex-grow: 1;
+      height: 48px;
+      background: #f0f2f5;
+      box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    .clay-input-hash {
+      font-weight: bold;
+      color: #9ca3af;
+      margin-right: 4px;
+    }
+
+    .clay-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: #4b5563;
+      text-transform: uppercase;
+    }
+
+    .btn-done {
+      height: 48px;
+      padding: 0 25px;
+      border-radius: 12px;
+      border: none;
+      background: #f0f2f5;
+      box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+      font-weight: bold;
+      color: var(--breath-color, #3b82f6);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-done:active {
+      box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+      transform: scale(0.95);
+    }
+
+    .presets-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .preset-item {
+      width: 48px;
+      height: 48px;
+      border: 2px solid #fff;
+      cursor: pointer;
+      background-color: var(--color);
+      border-radius: 41% 59% 45% 55% / 58% 44% 56% 42%;
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.4),
+        2px 2px 4px rgba(255, 255, 255, 0.5);
+      transition: background-color 0.1s, transform 0.2s;
+    }
+
+    .preset-item:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .clay-divider {
+      width: 100%;
+      padding-top: 10px;
+      border-top: 2px dashed rgba(160, 160, 160, 0.2);
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    .picker-card .breathclock__panel {
+      -webkit-user-select: none;
+      font-family: Monaco, "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: #334155;
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      cursor: pointer;
+      margin: 6px 0;
+    }
+
+    .picker-card .breathclock__btn {
+      background: none;
+      border: 0;
+      padding: 0;
+      font-family: inherit;
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      display: block;
+      line-height: 1.1;
+    }
+
+    .preview-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+
+    .preview-date {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(148, 163, 184, 1);
+    }
+
+    .config-options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: rgba(0, 0, 0, 0.02);
+      padding: 14px;
+      border-radius: 22px;
+      box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .option-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .clay-switch {
+      width: 44px;
+      height: 22px;
+      background: #f0f2f5;
+      box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+      border-radius: 11px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .clay-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 41% 59% 45% 55% / 58% 44% 56% 42%;
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.4),
+        2px 2px 4px rgba(255, 255, 255, 0.5);
+      transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    .clay-switch.active::after {
+      left: 24px;
+      background: var(--breath-color, #3b82f6);
+    }
+
+    .clay-select,
+    .clay-date-input {
+      background: #f0f2f5;
+      box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 10px;
+      outline: none;
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+
+    #countdown-detail {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    #countdown-detail.visible {
+      display: flex;
+    }
+
+    .picker-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: #f0f2f5;
+      box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+      font-weight: 700;
+      color: #6b7280;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .breathclock__content {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .breathclock__btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      line-height: 1.1;
+    }
+
+    .breathclock__btn:active {
+      transform: scale(0.99);
+    }
+
+    .breathclock__time {
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+
+    .breathclock__time:hover {
+      color: #16a34a;
+    }
+
+    .breathclock__date {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(148, 163, 184, 1);
+      transition: color 0.2s ease;
+    }
+
+    .breathclock__date:hover {
+      color: rgba(100, 116, 139, 1);
+    }
+
+    @media (max-width: 640px) {
+      .breathclock {
+        top: 10px;
+        right: 10px;
+      }
+      .breathclock__date {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .breathclock__dot-ring {
+        animation: none !important;
+      }
+    }
+
+    .login-float {
+      position: fixed;
+      left: 40px;
+      bottom: 16px;
+      z-index: 9999;
+      gap: 10px;
+      padding: 6px 8px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    @media (min-width: 1260px) {
+      .login-float {
+        left: 64px;
+      }
+    }
+
+    .login-float.is-hidden {
+      opacity: 0;
+    }
+
+    .login-float .team-avatars {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .login-float .avatarlinkblock,
+    .login-float .image-114,
+    .login-float .you-link {
+      position: relative;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-float .avatarlinkblock .image-42,
+    .login-float .image-114,
+    .login-float .image-115 {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .login-float .avatarborder {
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .login-float .avatarblackoverlay,
+    .login-float .image-43,
+    .login-float .text-block-16 {
+      display: none;
+    }
+
+    .login-float .you-link__icon {
+      position: relative;
+      width: 72px;
+      height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      align-self: center;
+      transform: translate(-10px, -6px);
+    }
+
+    .login-float .you-link__icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    @media (min-width: 1536px) {
+      .login-float .avatarlinkblock,
+      .login-float .image-114,
+      .login-float .you-link {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 右上角：极简呼吸时钟 -->
+  <div class="breathclock" id="breathclock" role="group" aria-label="极简呼吸时钟">
+    <div class="breathclock__panel">
+      <button class="breathclock__dot" id="breathclock-dot" type="button" title="点击切换 12/24小时制" aria-label="切换 12/24小时制">
+        <span class="breathclock__dot-ring" aria-hidden="true"></span>
+        <span class="breathclock__dot-core" aria-hidden="true"></span>
+      </button>
+      <div class="breathclock__content">
+        <button class="breathclock__btn breathclock__time" id="breathclock-time" type="button" title="点击切换秒针显示">
+          00:00:00
+        </button>
+        <button class="breathclock__btn breathclock__date" id="breathclock-date" type="button" title="点击切换日期格式">
+          正在加载日期...
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="picker-modal" id="configModal">
+    <div class="picker-card">
+      <button class="picker-close" id="configClose" type="button" aria-label="关闭">×</button>
+      <div class="color-board" id="colorBoard">
+        <div class="board-hue" id="boardHueBase"></div>
+        <div class="board-saturation"></div>
+        <div class="board-brightness"></div>
+        <div class="picker-thumb" id="boardThumb"></div>
+      </div>
+
+      <div class="modal-actions">
+        <div class="preview-circle" id="previewCircle"></div>
+        <div class="clay-input-group">
+          <span class="clay-input-hash">#</span>
+          <input type="text" class="clay-input" id="hexInput" maxlength="6" spellcheck="false">
+        </div>
+        <button class="btn-done" id="btnDone">OK</button>
+      </div>
+
+      <div class="clay-divider"></div>
+
+      <div class="presets-section">
+        <div class="presets-container" id="colorPresets">
+          <button class="preset-item" style="--color: #e11d48" data-hex="e11d48"></button>
+          <button class="preset-item" style="--color: #f472b6" data-hex="f472b6"></button>
+          <button class="preset-item" style="--color: #fb923c" data-hex="fb923c"></button>
+          <button class="preset-item" style="--color: #facc15" data-hex="facc15"></button>
+          <button class="preset-item" style="--color: #84cc16" data-hex="84cc16"></button>
+          <button class="preset-item" style="--color: #10b981" data-hex="10b981"></button>
+          <button class="preset-item" style="--color: #0ea5e9" data-hex="0ea5e9"></button>
+          <button class="preset-item" style="--color: #3b82f6" data-hex="3b82f6"></button>
+          <button class="preset-item" style="--color: #8b5cf6" data-hex="8b5cf6"></button>
+          <button class="preset-item" style="--color: #a78bfa" data-hex="a78bfa"></button>
+        </div>
+      </div>
+
+      <div class="clay-divider"></div>
+
+      <div class="breathclock__panel" id="preview-live-panel">
+        <button class="breathclock__dot" id="breathclock-dot-preview" type="button">
+          <span class="breathclock__dot-ring" aria-hidden="true"></span>
+          <span class="breathclock__dot-core" aria-hidden="true"></span>
+        </button>
+        <div class="breathclock__content">
+          <button class="breathclock__btn preview-time" id="preview-time" type="button">00:00:00</button>
+          <button class="breathclock__btn preview-date" id="preview-date" type="button">Loading...</button>
+        </div>
+      </div>
+
+      <div class="clay-divider"></div>
+
+      <div class="config-options">
+        <div class="option-row">
+          <span>24小时制</span>
+          <div class="clay-switch active" id="toggle24h"></div>
+        </div>
+        <div class="option-row">
+          <span>显示秒数</span>
+          <div class="clay-switch active" id="toggleSeconds"></div>
+        </div>
+        <div class="option-row">
+          <span>倒计时模式</span>
+          <div class="clay-switch" id="toggleCountdown"></div>
+        </div>
+
+        <div id="countdown-detail">
+          <div class="option-row">
+            <span>模式</span>
+            <select class="clay-select" id="cdMode">
+              <option value="daily">每日下班点</option>
+              <option value="target">特定日子</option>
+            </select>
+          </div>
+          <input type="time" class="clay-date-input" id="valDaily" value="18:00" style="width:100%">
+          <input type="datetime-local" class="clay-date-input" id="valTarget" style="display:none; width:100%">
+        </div>
+
+        <div class="option-row">
+          <span>日期格式</span>
+          <select class="clay-select" id="dateFormat">
+            <option value="en">Wed, Jan 14</option>
+            <option value="en-long">Wednesday, January 14</option>
+            <option value="cn">2026年1月14日</option>
+            <option value="zh-short">2026/1/14 周三</option>
+            <option value="numeric">2026-01-14</option>
+            <option value="short">01-14 周三</option>
+            <option value="none">不显示</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="__next">
+    <!-- 页面骨架占位 -->
+    <div></div>
+
+    <!-- 页面主区域 -->
+    <main class="page-shell min-full-screen flex flex-col items-center justify-center">
+      <div class="min-full-screen flex w-full max-w-[1728px] flex-col">
+        <div class="relative flex min-h-screen w-full flex-1 flex-col items-center">
+          <!-- 个人简介模块 -->
+          <section class="flex h-full w-full max-w-[428px] items-center justify-center p-6 pt-12 pb-0 xl:absolute xl:top-0 xl:max-w-[min(100vw,1728px)] xl:items-stretch xl:justify-start xl:p-16">
+            <div class="flex w-full flex-col px-4 xl:mr-20 xl:flex-1 xl:px-0">
+              <div class="profile-sticky relative xl:sticky xl:top-16">
+                <div class="search-card">
+                  <form class="search-form" action="#" method="get">
+                    <button type="button" class="search-select" aria-label="切换搜索引擎">
+                      <img class="search-icon" src="assets/icons/google.svg" alt="搜索引擎"/>
+                    </button>
+                    <input aria-label="Search" class="search-input" name="q" placeholder="输入搜索内容" type="search" autocomplete="off"/>
+                    <button class="search-trigger" type="submit" aria-label="搜索">
+                      <img src="assets/icons/search.svg" alt="搜索"/>
+                    </button>
+                  </form>
+                  <div class="search-suggestions" aria-live="polite"></div>
+                  <section class="hot-search" aria-label="热搜">
+                    <div class="hot-search__header">
+                      <span class="hot-search__title">热搜</span>
+                      <span class="hot-search__hint hot-search__switch" role="button" tabindex="0">微博</span>
+                    </div>
+                    <ol class="hot-search__list">
+                      <li class="hot-search__item"><span class="hot-search__rank">1</span><a class="hot-search__text" href="#" tabindex="-1">热搜内容占位一</a></li>
+                      <li class="hot-search__item"><span class="hot-search__rank">2</span><a class="hot-search__text" href="#" tabindex="-1">热搜内容占位二</a></li>
+                      <li class="hot-search__item"><span class="hot-search__rank">3</span><a class="hot-search__text" href="#" tabindex="-1">热搜内容占位三</a></li>
+                      <li class="hot-search__item"><span class="hot-search__rank">4</span><a class="hot-search__text" href="#" tabindex="-1">热搜内容占位四</a></li>
+                      <li class="hot-search__item"><span class="hot-search__rank">5</span><a class="hot-search__text" href="#" tabindex="-1">热搜内容占位五</a></li>
+                      <li class="hot-search__item"><span class="hot-search__rank">6</span><a class="hot-search__text" href="#" tabindex="-1">热搜内容占位六</a></li>
+                    </ol>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 卡片网格模块 -->
+          <section class="flex h-full w-full max-w-[428px] flex-1 flex-col p-6 pt-0 xl:max-w-[1728px] xl:flex-row xl:p-16">
+            <div class="mb-10 flex flex-col px-4 xl:mb-0 xl:mr-20 xl:flex-1 xl:px-0"></div>
+            <div class="relative flex-1 xl:w-[820px] xl:flex-none">
+              <div class="bento-grid">
+                <div class="bento-grid__content grid-content-ready">
+                  <!-- 个人主页：Twitter 关注卡片 -->
+                  <div class="bento-grid__item grid-item grid-item-twitter">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-twitter" draggable="false" role="link" tabindex="3" onclick="window.open('https://mail.163.com/','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://mail.163.com/','_blank','noopener,noreferrer')}">
+                          <div class="styles_widget__clip__417b_ no-scrollbar">
+                            <div class="styles_widget__content__GAekn styles_widget__content--snap__v7zti styles_link-widget-base__zEwMR">
+                              <div class="styles_link-widget___Cd4d styles_link-widget--2x4__KAleD">
+                                    <div class="styles_description__FRpZD">
+                                      <div class="flex items-start w-full">
+                                        <div class="relative styles_icon__5o5__">
+                                          <svg t="1768200374809" class="h-full w-full icon" viewBox="-64 -64 1152 1152" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5252" aria-hidden="true" focusable="false">
+                                            <path d="M20.48 0.6144m245.76 0l491.52 0q245.76 0 245.76 245.76l0 491.52q0 245.76-245.76 245.76l-491.52 0q-245.76 0-245.76-245.76l0-491.52q0-245.76 245.76-245.76Z" fill="#D83B01" p-id="5253" data-spm-anchor-id="a313x.search_index.0.i0.27173a81oI9s72"></path>
+                                            <path d="M568.9344 606.208c46.03904-36.2496 51.07712-38.01088 64.7168-20.8896 11.8784 14.70464 9.33888 17.36704-69.87776 86.4256-26.4192 23.26528-48.5376 47.43168-48.5376 54.35392 0 6.06208-6.84032 11.22304-14.49984 11.22304-7.61856 0-35.75808 14.7456-62.09536 33.75104-52.0192 37.15072-147.37408 78.6432-180.6336 78.6432-54.43584 0-51.07712-54.43584 4.3008-69.91872 94.57664-25.96864 191.6928-81.18272 306.5856-173.58848z m-35.67616-152.82176c11.0592-4.38272 29.77792-6.10304 41.7792-4.25984 11.83744 0.8192 39.1168 4.3008 61.2352 6.88128 97.8944 11.30496 171.13088 101.08928 163.51232 197.8368-4.21888 53.4528-18.71872 81.1008-62.13632 120.832-68.1984 62.09536-163.59424 92.32384-195.91168 62.99648-21.2992-19.90656-38.2976-62.2592-31.49824-78.6432 4.25984-12.12416 7.70048-12.12416 31.5392 0.86016 53.61664 27.648 130.2528-1.72032 174.53056-66.47808 44.31872-65.65888 25.51808-137.33888-35.75808-137.33888-22.1184 0-30.63808-5.16096-39.1168-24.1664-16.26112-33.62816-48.57856-35.34848-85.1968-3.39968-170.31168 149.34016-328.74496 230.52288-364.50304 187.35104-22.9376-27.60704-5.12-41.41056 89.41568-69.05856 32.3584-9.58464 86.016-37.96992 145.6128-78.6432 85.15584-56.9344 94.49472-65.536 91.17696-85.4016-3.44064-16.384 0-23.3472 15.31904-29.36832zM387.60448 140.82048c45.99808-9.50272 195.7888-7.7824 234.16832 2.53952 72.41728 19.0464 84.29568 31.9488 105.6768 121.89696 12.6976 53.53472 11.8784 77.66016-3.4816 114.81088-16.9984 42.35264-49.39776 52.6336-153.27232 51.77344-83.51744-0.8192-85.1968 0-99.65568 22.44608-17.94048 29.2864-90.35776 87.20384-122.6752 99.328-97.8944 35.30752-152.41216 38.78912-160.9728 11.14112-8.43776-26.78784 10.24-43.17184 50.29888-43.17184 50.176 0 132.83328-33.71008 156.672-63.0784 9.29792-10.32192 3.35872-12.98432-36.6592-16.384-53.6576-4.25984-72.37632-21.58592-82.5344-75.9808-9.4208-46.61248-7.70048-128.6144 1.6384-147.6608 10.32192-18.10432 38.37952-22.44608 47.75936-6.92224 3.44064 6.06208 5.98016 37.96992 6.79936 72.58112 1.72032 94.98624 6.84032 99.328 131.19488 94.98624 55.37792-1.80224 115.79392-3.4816 136.23296-4.38272 54.4768 0 73.23648-23.30624 66.43712-83.72224-5.98016-54.35392-17.94048-76.8-47.7184-88.064-26.33728-11.264-176.29184-14.70464-235.88864-5.24288-44.2368 6.10304-45.09696 6.10304-45.09696-15.52384 0-25.8048 9.33888-32.768 51.07712-41.3696zM385.8432 268.57472c5.98016-6.92224 38.37952-10.32192 101.33504-9.54368 120.91392 0.90112 114.8928-0.86016 111.57504 26.78784l-2.53952 23.30624-106.496 0.8192c-95.35488 0-106.496-1.6384-109.03552-15.52384a37.6832 37.6832 0 0 1 5.16096-25.8048v-0.04096z" fill="#FFFFFF" p-id="5254" data-spm-anchor-id="a313x.search_index.0.i1.27173a81oI9s72"></path>
+                                          </svg>
+                                          <div class="pointer-events-none absolute inset-0 rounded-[inherit] phantom-border"></div>
+                                        </div>
+                                        <div class="flex-1"></div>
+                                    <div class="styles_follow-button__8DSDT" role="button">前往</div>
+                                  </div>
+                                  <div class="styles_link-meta__container__K1H22">
+                                    <div class="styles_title___sgwe">
+                                      <div><p>网易163邮箱大师</p></div>
+                                    </div>
+                                    <div class="styles_handle__GaWZ1">mail.163.com</div>
+                                    <div class="styles_bio__EQplv"><a class="styles_bio__link" href="https://mail.qq.com/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">QQ邮箱</a><span class="styles_bio__sep" aria-hidden="true">·</span><a class="styles_bio__link" href="https://mail.hrbcu.edu.cn/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">商大邮箱</a><span class="styles_bio__sep" aria-hidden="true">·</span><a class="styles_bio__link" href="https://outlook.live.com/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Outlook邮箱</a><span class="styles_bio__sep" aria-hidden="true">·</span><a class="styles_bio__link" href="https://proton.me/mail" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Proton邮箱</a><span class="styles_bio__sep" aria-hidden="true">·</span><a class="styles_bio__link" href="https://smail.pw/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">24h邮箱</a></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="styles_widget__border__mnIDF"></div>
+                          <div class="styles_widget__border-highlight__wP_ik"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 音乐：Spotify 播放列表组件 -->
+                  <div class="bento-grid__item grid-item grid-item-spotify">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="styles_widget___JC_t styles_widget--rounding-lg__bZFfd styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-spotify" draggable="false" role="link" tabindex="4" onclick="window.open('https://chatgpt.com/','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://chatgpt.com/','_blank','noopener,noreferrer')}">
+                          <div class="styles_widget__clip__417b_ no-scrollbar">
+                            <div class="styles_widget__content__GAekn styles_widget__content--snap__v7zti styles_link-widget-base__zEwMR">
+                              <div class="spotify-card">
+                                <div class="spotify-card__header">
+                                  <div class="spotify-logo">
+                                    <div class="spotify-logo__icon">
+                                      <svg class="spotify-note spotify-note--1" width="15" height="15" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M6 0.9l1.6 3.1 3.4.5-2.5 2.4.6 3.4L6 8.7 2.9 10.3l.6-3.4L1 4.5l3.4-.5L6 0.9z"/></svg>
+                                      <svg class="spotify-note spotify-note--2" width="15" height="15" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M6 0.9l1.6 3.1 3.4.5-2.5 2.4.6 3.4L6 8.7 2.9 10.3l.6-3.4L1 4.5l3.4-.5L6 0.9z"/></svg>
+                                      <svg class="spotify-note spotify-note--3" width="15" height="15" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M6 0.9l1.6 3.1 3.4.5-2.5 2.4.6 3.4L6 8.7 2.9 10.3l.6-3.4L1 4.5l3.4-.5L6 0.9z"/></svg>
+                                      <img alt="ChatGPT logo" aria-hidden="true" height="28" src="assets/icons/chatgpt.svg" width="28"/>
+                                      <div class="phantom-border" aria-hidden="true"></div>
+                                    </div>
+                                    <div>
+                                      <div class="spotify-logo__title">ChatGPT</div>
+                                      <div class="spotify-logo__sub">OpenAI：chatgpt.com</div>
+                                    </div>
+                                  </div>
+                                  <div class="spotify-card__play">
+                                    <span>跳转</span>
+                                  </div>
+                                </div>
+                                <div class="spotify-tracks">
+                                  <a class="spotify-track" href="https://gemini.google.com/app" rel="noopener noreferrer" target="_blank" onclick="event.stopPropagation()">
+                                    <div class="spotify-track__cover-wrap" aria-hidden="true">
+                                      <div class="spotify-track__cover-overlay">
+                                        <img alt="" aria-hidden="true" height="12" src="assets/icons/play.svg" width="12"/>
+                                      </div>
+                                      <div class="spotify-track__cover-inner">
+                                        <img alt="" class="spotify-track__cover-img" src="assets/icons/Gemini.svg"/>
+                                        <div class="phantom-border" aria-hidden="true"></div>
+                                      </div>
+                                    </div>
+                                    <div class="spotify-track__info">
+                                      <div class="spotify-track__title">Google Gemini</div>
+                                      <div class="spotify-track__artist">https://gemini.google.com/app</div>
+                                    </div>
+                                    <div class="spotify-track__time">跳转</div>
+                                  </a>
+                                  <a class="spotify-track" href="https://www.doubao.com/chat/" rel="noopener noreferrer" target="_blank" onclick="event.stopPropagation()">
+                                    <div class="spotify-track__cover-wrap" aria-hidden="true">
+                                      <div class="spotify-track__cover-overlay">
+                                        <img alt="" aria-hidden="true" height="12" src="assets/icons/play.svg" width="12"/>
+                                      </div>
+                                      <div class="spotify-track__cover-inner">
+                                        <img alt="" class="spotify-track__cover-img" src="assets/icons/doubao.png"/>
+                                        <div class="phantom-border" aria-hidden="true"></div>
+                                      </div>
+                                    </div>
+                                    <div class="spotify-track__info">
+                                      <div class="spotify-track__title">豆包</div>
+                                      <div class="spotify-track__artist">https://www.doubao.com/chat/</div>
+                                    </div>
+                                    <div class="spotify-track__time">跳转</div>
+                                  </a>
+                                  <a class="spotify-track" href="https://chat.deepseek.com/" rel="noopener noreferrer" target="_blank" onclick="event.stopPropagation()">
+                                    <div class="spotify-track__cover-wrap" aria-hidden="true">
+                                      <div class="spotify-track__cover-overlay">
+                                        <img alt="" aria-hidden="true" height="12" src="assets/icons/play.svg" width="12"/>
+                                      </div>
+                                      <div class="spotify-track__cover-inner">
+                                        <img alt="" class="spotify-track__cover-img" src="assets/icons/deepseek.png"/>
+                                        <div class="phantom-border" aria-hidden="true"></div>
+                                      </div>
+                                    </div>
+                                    <div class="spotify-track__info">
+                                      <div class="spotify-track__title">Deepseek</div>
+                                      <div class="spotify-track__artist">https://chat.deepseek.com/</div>
+                                    </div>
+                                    <div class="spotify-track__time">跳转</div>
+                                  </a>
+                                  <a class="spotify-track" href="https://chatgpt.com/codex/settings/usage" rel="noopener noreferrer" target="_blank" onclick="event.stopPropagation()">
+                                    <div class="spotify-track__cover-wrap" aria-hidden="true">
+                                      <div class="spotify-track__cover-overlay">
+                                        <img alt="" aria-hidden="true" height="12" src="assets/icons/play.svg" width="12"/>
+                                      </div>
+                                      <div class="spotify-track__cover-inner">
+                                        <img alt="" class="spotify-track__cover-img" src="assets/icons/codex.svg"/>
+                                        <div class="phantom-border" aria-hidden="true"></div>
+                                      </div>
+                                    </div>
+                                    <div class="spotify-track__info">
+                                      <div class="spotify-track__title">Codex</div>
+                                      <div class="spotify-track__artist">https://chatgpt.com/codex/settings/usage</div>
+                                    </div>
+                                    <div class="spotify-track__time">跳转</div>
+                                  </a>
+                                </div>
+                                <div class="spotify-card__fade" aria-hidden="true"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="styles_widget__border__mnIDF"></div>
+                          <div class="styles_widget__border-highlight__wP_ik"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 项目预览：sonar -->
+                  <div class="bento-grid__item grid-item grid-item-sonar">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-dark" role="link" tabindex="9" onclick="window.open('https://www.amap.com/','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://www.amap.com/','_blank','noopener,noreferrer')}">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn styles_media-widget__lX7ez">
+                                <div class="absolute inset-0 rounded-[inherit] media-clip">
+                                  <img alt="" class="rounded-[inherit] media-image media-image-wide" loading="lazy" src="assets/images/gaode.png"/>
+                                </div>
+                                <div class="pointer-events-none absolute inset-0 rounded-[inherit] p-[14px]">
+                                  <div class="absolute inset-0 rounded-[inherit] transition-colors duration-150 ease-in-out"></div>
+                                  <div class="pointer-events-none absolute top-[12px] right-[12px] rounded-full border-[2px] backdrop-blur-[8px] transition-all duration-150 ease-in-out s-[26px] border-white/[0.20]"></div>
+                                </div>
+                                <a class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" href="https://map.baidu.com/" rel="noopener noreferrer" target="_blank" aria-label="Open Baidu Map" onclick="event.stopPropagation()" style="cursor:pointer;z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 北极熊卡片-开始 -->
+                  <div class="bento-grid__item grid-item grid-item-parabola">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd parabola-card" role="link" tabindex="10" onclick="window.open('https://www.zhihu.com/','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://www.zhihu.com/','_blank','noopener,noreferrer')}">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn parabola-card__content">
+                                <img alt="Parabola icon" class="parabola-card__icon js-parabola-refresh" src="assets/icons/zhihu.svg" role="button" tabindex="0" aria-label="刷新内容"/>
+                                <div class="parabola-card__title">ZhiHu</div>
+                                <div class="parabola-card__desc"><a class="parabola-card__link" href="https://www.zhihu.com/" target="_blank" rel="noopener noreferrer">加载中...</a></div>
+                                <!-- 北极熊精灵图（裁切容器 + 动画层） -->
+                                <div class="parabola-card__sprite-clip" aria-hidden="true" style="position:absolute;left:0;right:0;top:20.6%;bottom:0;overflow:hidden;z-index:50;">
+                                  <div class="parabola-card__sprite" aria-hidden="true" style="position:absolute;right:9.7%;top:-19.3%;width:130px;height:110px;background-image:url('assets/action/splash-c56972c4.png');background-size:1000% 500%;background-repeat:no-repeat;background-position:0 0;image-rendering:pixelated;"></div>
+                                </div>
+                              </div>
+                              <button class="parabola-card__arrow" type="button" aria-label="切换分类" title="切换分类">
+                                <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                              </button>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 北极熊卡片-结束 -->
+
+                  <!-- 项目预览：右侧卡片 -->
+                  <div class="bento-grid__item grid-item grid-item-rightcard">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--highlight-partial__40XJd" data-widget-content-container="true">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn styles_media-widget__lX7ez">
+                                <div class="absolute inset-0 rounded-[inherit] media-clip">
+                                  <img alt="" class="rounded-[inherit] media-image" loading="lazy" src="assets/images/3to11.png"/>
+                                </div>
+                                <div class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" aria-hidden="true" style="z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 项目预览：pomorhythm -->
+                  <div class="bento-grid__item grid-item grid-item-pomorhythm">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--highlight-partial__40XJd widget-theme-dark" role="link" tabindex="7">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn styles_media-widget__lX7ez">
+                                <div class="absolute inset-0 rounded-[inherit] media-clip">
+                                  <img alt="" class="rounded-[inherit] media-image media-image-square" loading="lazy" src="assets/images/font.jpg"/>
+                                </div>
+                                <div class="pointer-events-none absolute inset-0 rounded-[inherit] p-[14px]">
+                                  <div class="absolute inset-0 rounded-[inherit] transition-colors duration-150 ease-in-out"></div>
+                                  <div class="pointer-events-none absolute top-[12px] right-[12px] rounded-full border-[2px] backdrop-blur-[8px] transition-all duration-150 ease-in-out s-[26px] border-white/[0.20]"></div>
+                                </div>
+                                <div class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" aria-hidden="true" style="z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 项目预览：hamburg -->
+                  <div class="bento-grid__item grid-item grid-item-hamburg">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-dark" role="link" tabindex="10" onclick="window.open('https://www.openrailwaymap.org/?style=standard&lang=zh_CN&lat=35.65729624809628&lon=111.33544921874999&zoom=5','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://www.openrailwaymap.org/?style=standard&lang=zh_CN&lat=35.65729624809628&lon=111.33544921874999&zoom=5','_blank','noopener,noreferrer')}">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn styles_media-widget__lX7ez">
+                                <div class="absolute inset-0 rounded-[inherit] media-clip">
+                                  <img alt="" class="rounded-[inherit] media-image" loading="lazy" src="assets/images/map.png"/>
+                                </div>
+                                <div class="absolute z-20" style="left:12px;bottom:12px;max-width:calc(100% - 24px);">
+                                  <div class="bg-white px-4 py-2 text-sm rounded-[12px]" style="box-shadow:0 0 0 1px rgba(0,0,0,0.06);max-width:100%;width:fit-content;"><p class="hamburg-map-label" style="margin:0;">黑龙江省，哈尔滨市</p></div>
+                                </div>
+                                <div class="pointer-events-none absolute inset-0 rounded-[inherit] p-[14px]">
+                                  <div class="absolute inset-0 rounded-[inherit] transition-colors duration-150 ease-in-out"></div>
+                                  <div class="pointer-events-none absolute top-[12px] right-[12px] rounded-full border-[2px] backdrop-blur-[8px] transition-all duration-150 ease-in-out s-[26px] border-white/[0.20]"></div>
+                                </div>
+                                <a class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" href="http://cnrail.geogv.org/zhcn/about" rel="noopener noreferrer" target="_blank" aria-label="Open Railway About" onclick="event.stopPropagation()" style="cursor:pointer;z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 项目预览：layers.to -->
+                  <div class="bento-grid__item grid-item grid-item-layers">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit]">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-layers" role="link" tabindex="8" onclick="window.open('https://47.104.187.129:5201/wczzsmmb','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://47.104.187.129:5201/wczzsmmb','_blank','noopener,noreferrer')}">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn layers-card">
+                                <div class="layers-card__icon" aria-hidden="true">
+                                  <img alt="" src="assets/icons/nginx.png"/>
+                                </div>
+                                <div class="layers-card__title">aaplane</div>
+                                <div class="layers-card__desc">47.104.187.129</div>
+                                <button class="layers-card__btn" type="button" aria-label="打开项目预览" onclick="event.stopPropagation();window.open('https://47.104.187.129:5201/wczzsmmb','_blank','noopener,noreferrer')">打开</button>
+                                <a class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" href="http://47.104.187.129:8080/login/index" rel="noopener noreferrer" target="_blank" aria-label="Open Login" onclick="event.stopPropagation()" style="cursor:pointer;z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 项目预览：个人站点（CV） -->
+                  <div class="bento-grid__item grid-item grid-item-cv">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-dark" role="link" tabindex="6" onclick="window.open('https://zlib.wwwnav.com/','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://zlib.wwwnav.com/','_blank','noopener,noreferrer')}">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn styles_media-widget__lX7ez">
+                                <div class="absolute inset-0 rounded-[inherit] media-clip">
+                                  <img alt="" class="rounded-[inherit] media-image media-image-square" loading="lazy" src="assets/images/z-lib.png"/>
+                                </div>
+                                <div class="pointer-events-none absolute inset-0 rounded-[inherit] p-[14px]">
+                                  <div class="absolute inset-0 rounded-[inherit] transition-colors duration-150 ease-in-out"></div>
+                                  <div class="pointer-events-none absolute top-[12px] right-[12px] rounded-full border-[2px] backdrop-blur-[8px] transition-all duration-150 ease-in-out s-[26px] border-white/[0.20]"></div>
+                                </div>
+                                <a class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" href="https://zh.booksc.org/" rel="noopener noreferrer" target="_blank" aria-label="Open BookSC" onclick="event.stopPropagation()" style="cursor:pointer;z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 项目预览：yiyang.ch -->
+                  <div class="bento-grid__item grid-item grid-item-yiyang">
+                    <div class="bento-item__scaler">
+                      <div class="bento-item__content">
+                        <div class="h-full w-full rounded-[inherit] media-scale">
+                          <div class="styles_widget___JC_t styles_widget--rounding-md__rZYhh styles_widget--bordered__eKEvv styles_widget--elevated__5whS8 styles_widget--hover-elevated__ru_L1 styles_widget--clickable__zPkxQ styles_widget--highlight-partial__40XJd widget-theme-dark" role="link" tabindex="5" onclick="window.open('https://www.iconfont.cn/','_blank','noopener,noreferrer')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.open('https://www.iconfont.cn/','_blank','noopener,noreferrer')}">
+                            <div class="styles_widget__clip__417b_ no-scrollbar">
+                              <div class="styles_widget__content__GAekn styles_media-widget__lX7ez">
+                                <div class="absolute inset-0 rounded-[inherit] media-clip">
+                                  <img alt="" class="rounded-[inherit] media-image media-image-square" loading="lazy" src="assets/images/image_15.png"/>
+                                </div>
+                                <div class="pointer-events-none absolute inset-0 rounded-[inherit] p-[14px]">
+                                  <div class="absolute inset-0 rounded-[inherit] transition-colors duration-150 ease-in-out"></div>
+                                  <div class="pointer-events-none absolute top-[12px] right-[12px] rounded-full border-[2px] backdrop-blur-[8px] transition-all duration-150 ease-in-out s-[26px] border-white/[0.20]"></div>
+                                </div>
+                                <a class="absolute top-[14px] right-[14px] flex items-center justify-center rounded-full bg-black/20 backdrop-blur-[8px] s-[22px]" href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener noreferrer" target="_blank" aria-label="Open Creative Commons" onclick="event.stopPropagation()" style="cursor:pointer;z-index:5;">
+                                  <img alt="" aria-hidden="true" src="assets/icons/external-link-custom.svg" width="15" height="15" style="display:block;"/>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="styles_widget__border__mnIDF"></div>
+                            <div class="styles_widget__border-highlight__wP_ik"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+    </main>
+  </div>
+  <!-- 登录入口浮层 -->
+  <div class="flex items-center space-x-1 rounded-[12px] p-1 transition-colors 2xl:space-x-2 duration-400 bg-white delay-500 login-float">
+    <div class="team-avatars">
+      <div class="avatarlinkblock w-inline-block">
+        <img src="assets/images/0.jpg" loading="lazy" width="200" alt="" class="image-42"/>
+        <div class="avatarborder"></div>
+        <div style="opacity: 0;" class="avatarblackoverlay"></div>
+        <img src="https://cdn.prod.website-files.com/5ea094d69feadb4133a3d1dd/62c6dfd8bba7cef8abf5768a_arrowwhite.svg" loading="lazy" alt="" style="opacity: 0; transform: translate3d(-2px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg); transform-style: preserve-3d;" class="image-43"/>
+        <div style="opacity: 0;" class="text-block-16">Sélim's&nbsp;Bento</div>
+      </div>
+      <div class="avatarlinkblock w-inline-block">
+        <img src="assets/images/1.jpg" loading="lazy" width="74" alt="" class="image-42"/>
+        <div class="avatarborder"></div>
+        <div class="avatarblackoverlay" style="opacity: 0;"></div>
+        <img src="https://cdn.prod.website-files.com/5ea094d69feadb4133a3d1dd/62c6dfd8bba7cef8abf5768a_arrowwhite.svg" loading="lazy" alt="" class="image-43" style="opacity: 0; transform: translate3d(-2px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg); transform-style: preserve-3d;"/>
+        <div class="text-block-16" style="opacity: 0;">Mugeeb's&nbsp;Bento</div>
+      </div>
+      <div class="avatarlinkblock w-inline-block">
+        <img src="assets/images/2.jpg" loading="lazy" width="64" alt="" class="image-42"/>
+        <div class="avatarborder"></div>
+        <div class="avatarblackoverlay" style="opacity: 0;"></div>
+        <img src="https://cdn.prod.website-files.com/5ea094d69feadb4133a3d1dd/62c6dfd8bba7cef8abf5768a_arrowwhite.svg" loading="lazy" alt="" class="image-43" style="opacity: 0; transform: translate3d(-2px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg); transform-style: preserve-3d;"/>
+        <div class="text-block-16" style="opacity: 0;">Eike's&nbsp;Bento</div>
+      </div>
+      <div class="avatarlinkblock w-inline-block">
+        <img src="assets/images/3.jpg" loading="lazy" width="64" alt="" class="image-42"/>
+        <div class="avatarborder"></div>
+        <div class="avatarblackoverlay" style="opacity: 0;"></div>
+        <img src="https://cdn.prod.website-files.com/5ea094d69feadb4133a3d1dd/62c6dfd8bba7cef8abf5768a_arrowwhite.svg" loading="lazy" alt="" class="image-43" style="opacity: 0; transform: translate3d(-2px, 2px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg); transform-style: preserve-3d;"/>
+        <div class="text-block-16" style="opacity: 0;">Valerie's&nbsp;Bento</div>
+      </div>
+      <span class="you-link__icon" aria-hidden="true"><svg width="145" height="96" viewBox="0 0 145 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M74.5 11.5L81 19" stroke="#768CFF" stroke-width="3" stroke-linecap="round"/><path d="M85.5 10.5C85.3333 16.1667 84.1 27.9 80.5 29.5C76.9 31.1 73.6667 29.1667 72.5 28" stroke="#768CFF" stroke-width="3" stroke-linecap="round"/><path d="M97.5 10.5001C95.3333 10.1667 91 10.5001 91 14.5001C91 19.5001 94.5 22 97.5 22C100.5 22 106 18 102.5 8.5" stroke="#768CFF" stroke-width="3" stroke-linecap="round"/><path d="M109.502 10C109.169 14 109.702 22 114.502 22C122 22 123 17 122 11.5" stroke="#768CFF" stroke-width="3" stroke-linecap="round"/><path d="M130 5.70638C133.012 4.01114 139.821 2.0744 139.821 8.05364C139.821 13.5305 132.75 8.83599 131.179 13.5305C129.607 18.225 134.714 20.5723 141 17.8338" stroke="#768CFF" stroke-width="3" stroke-linecap="round"/><path d="M52.5602 38.5C36.8935 34.5 5.26015 33.3 4.06015 60.5C2.56015 94.5 29.5602 91.5 35.0602 91.5C40.5602 91.5 78 89 60.5 35" stroke="#768CFF" stroke-width="3" stroke-linecap="round"/><circle cx="136.5" cy="25.5" r="1.5" fill="#768CFF"/></svg></span>
+    </div>
+  </div>
+  <next-route-announcer>
+    <p aria-live="assertive" class="sr-announcer" id="__next-route-announcer__" role="alert"></p>
+  </next-route-announcer>
+  <script>
+    (function() {
+      const engines = [
+        {
+          key: 'google',
+          name: 'Google',
+          icon: 'assets/icons/google.svg',
+          buildUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+          suggestUrl: (q) => `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(q)}&callback=window.searchCallbacks.google`,
+          parseSuggest: (data) => Array.isArray(data?.[1]) ? data[1] : []
+        },
+        {
+          key: 'baidu',
+          name: '百度',
+          icon: 'assets/icons/baidu.svg',
+          buildUrl: (q) => `https://www.baidu.com/s?wd=${encodeURIComponent(q)}`,
+          suggestUrl: (q) => `https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${encodeURIComponent(q)}&cb=window.searchCallbacks.baidu`,
+          parseSuggest: (data) => Array.isArray(data?.s) ? data.s : []
+        },
+        {
+          key: 'bing',
+          name: '必应',
+          icon: 'assets/icons/bing.svg',
+          buildUrl: (q) => `https://www.bing.com/search?q=${encodeURIComponent(q)}`,
+          suggestUrl: (q) => `https://api.bing.com/qsonhs.aspx?type=cb&q=${encodeURIComponent(q)}&cb=window.searchCallbacks.bing`,
+          parseSuggest: (data) => {
+            if (data && data.AS && data.AS.Results && data.AS.Results.length > 0) {
+              return data.AS.Results[0].Suggests.map(item => item.Txt);
+            }
+            return [];
+          }
+        }
+      ];
+
+      const form = document.querySelector('.search-form');
+      const engineBtn = document.querySelector('.search-select');
+      const input = document.querySelector('.search-input');
+      const suggestionBox = document.querySelector('.search-suggestions');
+      const hotSearchSection = document.querySelector('.hot-search');
+
+      if (!form || !engineBtn || !input || !suggestionBox) return;
+
+      let currentEngine = 0;
+      let jsonpScript = null;
+      let jsonpTimeout = null;
+      let lastQuery = '';
+      let lastInput = '';
+      let lastSuggestions = [];
+      const setHotSearchVisible = (visible) => {
+        if (!hotSearchSection) return;
+        hotSearchSection.style.display = visible ? '' : 'none';
+      };
+
+      const translateEngines = [
+        { name: 'Google', build: (q) => `https://translate.google.com/?sl=auto&tl=zh-CN&text=${encodeURIComponent(q)}&op=translate` },
+        { name: '百度', build: (q) => `https://fanyi.baidu.com/#auto/zh/${encodeURIComponent(q)}` },
+        { name: '网易', build: (q) => `https://fanyi.youdao.com/?keyfrom=dict.top&i=${encodeURIComponent(q)}` }
+      ];
+      let translateIndex = 0;
+
+      window.searchCallbacks = {
+        google: (data) => handleSuggestCallback('google', data),
+        baidu: (data) => handleSuggestCallback('baidu', data),
+        bing: (data) => handleSuggestCallback('bing', data)
+      };
+
+      const engineIcon = engineBtn.querySelector('.search-icon');
+      const syncEngineLabel = () => {
+        const name = engines[currentEngine].name;
+        if (engineIcon) {
+          engineIcon.src = engines[currentEngine].icon;
+          engineIcon.alt = `${name} 图标`;
+        }
+        engineBtn.title = name;
+        engineBtn.setAttribute('aria-label', `当前搜索引擎：${name}，点击切换`);
+      };
+      syncEngineLabel();
+
+      engineBtn.addEventListener('click', () => {
+        lastInput = input.value.trim();
+        currentEngine = (currentEngine + 1) % engines.length;
+        syncEngineLabel();
+        // 保持列表展示，优先用当前输入刷新；无输入也保持翻译入口
+        updateSuggestionBox();
+        if (lastInput) {
+          requestSuggestions(lastInput);
+        }
+      });
+
+      const updateSuggestionBox = () => {
+        const q = lastInput.trim();
+        const base = Array.isArray(lastSuggestions) ? lastSuggestions.slice(0, 5) : [];
+        const provider = translateEngines[translateIndex];
+        const translateUrl = provider.build(q || '');
+        const items = [
+          `<button type="button" class="suggestion-item suggestion-translate" data-translate="${translateUrl}"><span class="translate-label">${provider.name}翻译${q ? `：${q}` : ''}</span><span class="translate-switch" data-switch="true">切换</span></button>`
+        ];
+        items.push(...base.map(item => `<button type="button" class="suggestion-item">${item}</button>`));
+        suggestionBox.innerHTML = items.join('');
+        suggestionBox.classList.add('open');
+        setHotSearchVisible(false);
+      };
+
+      input.addEventListener('input', () => {
+        const val = input.value.trim();
+        lastInput = val;
+        if (!val) {
+          lastSuggestions = [];
+          updateSuggestionBox();
+          cleanupJsonp();
+          return;
+        }
+        requestSuggestions(val);
+      });
+
+      input.addEventListener('focus', () => {
+        lastInput = input.value.trim();
+        if (lastInput) {
+          input.dispatchEvent(new Event('input'));
+        } else {
+          updateSuggestionBox();
+        }
+      });
+
+      suggestionBox.addEventListener('click', (e) => {
+        const switchBtn = e.target.closest('.translate-switch');
+        if (switchBtn) {
+          translateIndex = (translateIndex + 1) % translateEngines.length;
+          const translateBtn = suggestionBox.querySelector('.suggestion-translate');
+          const q = lastInput.trim();
+          const provider = translateEngines[translateIndex];
+          if (translateBtn) {
+            translateBtn.dataset.translate = provider.build(q || '');
+            const label = translateBtn.querySelector('.translate-label');
+            if (label) label.textContent = `${provider.name}翻译${q ? `：${q}` : ''}`;
+          } else {
+            updateSuggestionBox();
+          }
+          return;
+        }
+        const translateBtn = e.target.closest('.suggestion-translate');
+        if (translateBtn) {
+          const translateUrl = translateBtn.dataset.translate;
+          if (translateUrl) window.open(translateUrl, '_blank');
+          return; // 不关闭列表
+        }
+        const btn = e.target.closest('.suggestion-item');
+        if (!btn) return;
+        input.value = btn.textContent;
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!suggestionBox.contains(e.target) && !form.contains(e.target)) {
+          lastSuggestions = [];
+          suggestionBox.innerHTML = '';
+          suggestionBox.classList.remove('open');
+          setHotSearchVisible(true);
+          cleanupJsonp();
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = input.value.trim();
+        if (!query) return;
+        const url = engines[currentEngine].buildUrl(query);
+        window.open(url, '_blank');
+        lastSuggestions = [];
+        suggestionBox.innerHTML = '';
+        suggestionBox.classList.remove('open');
+        setHotSearchVisible(true);
+        cleanupJsonp();
+      });
+
+      const requestSuggestions = (query) => {
+        const engine = engines[currentEngine];
+        lastQuery = query;
+        lastInput = query;
+
+        if (jsonpScript && jsonpScript.parentNode) jsonpScript.parentNode.removeChild(jsonpScript);
+        if (jsonpTimeout) clearTimeout(jsonpTimeout);
+
+        jsonpScript = document.createElement('script');
+        jsonpScript.src = engine.suggestUrl(query);
+        jsonpScript.referrerPolicy = 'no-referrer';
+        jsonpScript.onerror = () => {
+          lastSuggestions = [];
+          updateSuggestionBox();
+          cleanupJsonp();
+        };
+        document.body.appendChild(jsonpScript);
+
+        jsonpTimeout = setTimeout(() => {
+          lastSuggestions = [];
+          updateSuggestionBox();
+          cleanupJsonp();
+        }, 1500);
+      };
+
+      const handleSuggestCallback = (key, data) => {
+        const engine = engines[currentEngine];
+        if (!engine || engine.key !== key) return;
+        const currentVal = input.value.trim();
+        if (!currentVal) {
+          lastSuggestions = [];
+          updateSuggestionBox();
+          cleanupJsonp();
+          return;
+        }
+        if (currentVal !== lastQuery) {
+          requestSuggestions(currentVal);
+          return;
+        }
+        lastSuggestions = engine.parseSuggest(data).slice(0, 8);
+        updateSuggestionBox();
+        cleanupJsonp();
+      };
+
+      const cleanupJsonp = () => {
+        if (jsonpScript && jsonpScript.parentNode) jsonpScript.parentNode.removeChild(jsonpScript);
+        jsonpScript = null;
+        if (jsonpTimeout) clearTimeout(jsonpTimeout);
+        jsonpTimeout = null;
+      };
+    })();
+  </script>
+  <script>
+    (function() {
+      const list = document.querySelector('.hot-search__list');
+      const hint = document.querySelector('.hot-search__hint');
+      if (!list) return;
+
+      const formatWallstreetDetail = (item) => {
+        const views = Number.isFinite(item?.pageviews) ? `${item.pageviews} 阅读` : '';
+        const author = Number.isFinite(item?.display_user_id) ? `作者ID ${item.display_user_id}` : '';
+        const time = item?.display_time ? new Date(item.display_time * 1000).toLocaleString('zh-CN') : '';
+        return [time, views, author].filter(Boolean).join(' · ');
+      };
+
+      const sources = {
+        weibo: {
+          name: '微博',
+          url: 'https://v2.xxapi.cn/api/weibohot',
+          parse: (data) => Array.isArray(data?.data) ? data.data.map((item) => ({
+            title: item.title,
+            url: item.url,
+            hot: item.hot
+          })) : []
+        },
+        baidu: {
+          name: '百度',
+          url: 'https://v2.xxapi.cn/api/baiduhot',
+          parse: (data) => Array.isArray(data?.data) ? data.data.map((item) => ({
+            title: item.title,
+            url: item.url,
+            hot: item.hot
+          })) : []
+        },
+        douyin: {
+          name: '抖音',
+          url: 'https://v2.xxapi.cn/api/douyinhot',
+          parse: (data) => Array.isArray(data?.data) ? data.data.map((item) => ({
+            title: item.word,
+            url: item.word ? `https://www.douyin.com/search/${encodeURIComponent(item.word)}` : 'https://www.douyin.com/hot',
+            hot: item.hot_value ? `${item.hot_value}` : ''
+          })) : []
+        },
+        hot36kr: {
+          name: '36氪',
+          url: 'https://v2.xxapi.cn/api/hot36kr',
+          parse: (data) => Array.isArray(data?.data) ? data.data.map((item) => ({
+            title: item?.templateMaterial?.widgetTitle,
+            url: item?.route?.itemId || item?.itemId || item?.item_id
+              ? `https://36kr.com/p/${item.route?.itemId || item.itemId || item.item_id}`
+              : '',
+            hot: ''
+          })) : []
+        },
+        bilibili: {
+          name: 'B站',
+          url: 'https://v2.xxapi.cn/api/bilibilihot',
+          parse: (data) => Array.isArray(data?.data) ? data.data.map((item) => ({
+            title: item,
+            url: item ? `https://search.bilibili.com/all?keyword=${encodeURIComponent(item)}` : 'https://www.bilibili.com/v/popular/rank/all',
+            hot: ''
+          })) : []
+        },
+        wallstreetcn: {
+          name: '华尔街见闻',
+          url: 'https://api-prod.wallstreetcn.com/apiv1/content/articles/hot?limit=20&period=day',
+          parse: (data) => (data && data.data && Array.isArray(data.data.day_items) ? data.data.day_items : [])
+            .map((item) => ({
+              title: item.title,
+              url: item.uri,
+              hot: '',
+              detail: formatWallstreetDetail(item)
+            }))
+        }
+      };
+
+      const escapeHtml = (value) => String(value || '').replace(/[&<>"']/g, (char) => {
+        switch (char) {
+          case '&':
+            return '&amp;';
+          case '<':
+            return '&lt;';
+          case '>':
+            return '&gt;';
+          case '"':
+            return '&quot;';
+          case "'":
+            return '&#39;';
+          default:
+            return char;
+        }
+      });
+
+      const renderItems = (items, label) => {
+        const topItems = Array.isArray(items) ? items.slice(0, 6) : [];
+        if (!topItems.length) return;
+        list.innerHTML = topItems
+          .map((item, index) => {
+            const title = escapeHtml(item.title);
+            const url = item.url ? escapeHtml(item.url) : '#';
+            const hot = item.hot ? escapeHtml(item.hot) : '';
+            const hotMarkup = hot ? `<span class="hot-search__hot">${hot}</span>` : '';
+            const detail = item.detail ? ` title="${escapeHtml(item.detail)}"` : '';
+            return `<li class="hot-search__item"><span class="hot-search__rank">${index + 1}</span><a class="hot-search__text" href="${url}" target="_blank" rel="noopener noreferrer"${detail}>${title}</a>${hotMarkup}</li>`;
+          })
+          .join('');
+        if (hint && label) hint.textContent = label;
+      };
+
+      const sourceKeys = Object.keys(sources);
+      let currentIndex = sourceKeys.indexOf('wallstreetcn');
+      if (currentIndex < 0) currentIndex = 0;
+
+      const setHint = (label) => {
+        if (hint) hint.textContent = label;
+      };
+
+      const loadSource = (key) => {
+        const source = sources[key];
+        if (!source) return;
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        fetch(source.url, { signal: controller.signal })
+          .then((response) => (response.ok ? response.json() : Promise.reject(new Error('bad response'))))
+          .then((data) => {
+            const items = source.parse ? source.parse(data) : [];
+            renderItems(items, source.name);
+            setHint(source.name);
+          })
+          .catch(() => {
+            // 保留占位内容
+          })
+          .finally(() => {
+            clearTimeout(timeoutId);
+          });
+      };
+
+      const switchSource = () => {
+        currentIndex = (currentIndex + 1) % sourceKeys.length;
+        loadSource(sourceKeys[currentIndex]);
+      };
+
+      if (hint) {
+        hint.addEventListener('click', switchSource);
+        hint.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            switchSource();
+          }
+        });
+      }
+
+      loadSource(sourceKeys[currentIndex] || 'wallstreetcn');
+    })();
+  </script>
+  <script>
+    (function() {
+      const card = document.querySelector('.grid-item-hamburg');
+      if (!card) return;
+      const img = card.querySelector('.media-image');
+      const label = card.querySelector('.hamburg-map-label');
+      if (!img || !label) return;
+
+      const options = [
+        { src: 'assets/images/map.png', text: '黑龙江省，哈尔滨市', weight: 60 },
+        { src: 'assets/images/map1.png', text: '山东省，济南市', weight: 30 },
+        { src: 'assets/images/map4.png', text: '山东省，临沂市', weight: 10 }
+      ];
+
+      const total = options.reduce((sum, item) => sum + item.weight, 0);
+      let pick = Math.random() * total;
+      const selected = options.find((item) => {
+        pick -= item.weight;
+        return pick < 0;
+      }) || options[0];
+
+      img.src = selected.src;
+      label.textContent = selected.text;
+    })();
+  </script>
+  <script>
+    (function() {
+      const loginFloat = document.querySelector('.login-float');
+      if (!loginFloat) return;
+
+      const toggleFloat = () => {
+        loginFloat.classList.toggle('is-hidden');
+      };
+
+      loginFloat.addEventListener('click', toggleFloat);
+    })();
+  </script>
+  <script>
+    (function() {
+      const config = {
+        h: 217,
+        s: 76,
+        v: 96,
+        use24h: true,
+        showSeconds: true,
+        isCountdown: false,
+        cdMode: 'daily',
+        dailyTime: '18:00',
+        targetDate: '',
+        dateFormat: 'en'
+      };
+
+      const dom = {
+        modal: document.getElementById('configModal'),
+        clock: document.getElementById('breathclock'),
+        board: document.getElementById('colorBoard'),
+        boardHue: document.getElementById('boardHueBase'),
+        boardThumb: document.getElementById('boardThumb'),
+        previewCircle: document.getElementById('previewCircle'),
+        hexInput: document.getElementById('hexInput'),
+        btnDone: document.getElementById('btnDone'),
+        btnClose: document.getElementById('configClose'),
+        timeDisplay: document.getElementById('breathclock-time'),
+        dateDisplay: document.getElementById('breathclock-date'),
+        previewTime: document.getElementById('preview-time'),
+        previewDate: document.getElementById('preview-date'),
+        toggle24h: document.getElementById('toggle24h'),
+        toggleSeconds: document.getElementById('toggleSeconds'),
+        toggleCountdown: document.getElementById('toggleCountdown'),
+        countdownDetail: document.getElementById('countdown-detail'),
+        cdMode: document.getElementById('cdMode'),
+        valDaily: document.getElementById('valDaily'),
+        valTarget: document.getElementById('valTarget'),
+        dateFormat: document.getElementById('dateFormat')
+      };
+
+      if (!dom.clock || !dom.modal || !dom.timeDisplay || !dom.dateDisplay) return;
+
+      const hsvToRgb = (h, s, v) => {
+        s /= 100;
+        v /= 100;
+        const f = (n, k = (n + h / 60) % 6) => v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
+        return [Math.round(f(5) * 255), Math.round(f(3) * 255), Math.round(f(1) * 255)];
+      };
+
+      const rgbToHex = (r, g, b) => [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+
+      const hexToHsv = (hex) => {
+        const r = parseInt(hex.slice(0, 2), 16) / 255;
+        const g = parseInt(hex.slice(2, 4), 16) / 255;
+        const b = parseInt(hex.slice(4, 6), 16) / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const d = max - min;
+        let h = 0;
+        let s = max === 0 ? 0 : d / max;
+        const v = max;
+        if (max !== min) {
+          if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+          else if (max === g) h = (b - r) / d + 2;
+          else h = (r - g) / d + 4;
+          h /= 6;
+        }
+        return { h: h * 360, s: s * 100, v: v * 100 };
+      };
+
+      const updateColorUI = () => {
+        const rgb = hsvToRgb(config.h, config.s, config.v);
+        const hex = rgbToHex(...rgb);
+        if (dom.boardHue) dom.boardHue.style.backgroundColor = `hsl(${config.h}, 100%, 50%)`;
+        if (dom.previewCircle) dom.previewCircle.style.backgroundColor = `#${hex}`;
+        if (document.activeElement !== dom.hexInput && dom.hexInput) dom.hexInput.value = hex;
+        document.documentElement.style.setProperty('--breath-color', `#${hex}`);
+        dom.clock.style.setProperty('--breathclock-color', `#${hex}`);
+        if (dom.boardThumb) {
+          dom.boardThumb.style.left = `${config.s}%`;
+          dom.boardThumb.style.top = `${100 - config.v}%`;
+        }
+        saveConfig();
+      };
+
+      const saveConfig = () => {
+        try {
+          localStorage.setItem('breathclock-config', JSON.stringify(config));
+        } catch (err) {
+          // ignore storage errors
+        }
+      };
+
+      const loadConfig = () => {
+        try {
+          const raw = localStorage.getItem('breathclock-config');
+          if (!raw) return;
+          const saved = JSON.parse(raw);
+          if (!saved || typeof saved !== 'object') return;
+          Object.assign(config, saved);
+        } catch (err) {
+          // ignore storage errors
+        }
+      };
+
+      const bindDrag = (el, fn) => {
+        if (!el) return;
+        const down = (e) => {
+          fn(e);
+          window.onmousemove = window.ontouchmove = fn;
+        };
+        const up = () => {
+          window.onmousemove = window.ontouchmove = null;
+        };
+        el.onmousedown = el.ontouchstart = down;
+        window.onmouseup = window.ontouchend = up;
+      };
+
+      bindDrag(dom.board, (e) => {
+        const rect = dom.board.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        config.s = (Math.max(0, Math.min(clientX - rect.left, rect.width)) / rect.width) * 100;
+        config.v = 100 - (Math.max(0, Math.min(clientY - rect.top, rect.height)) / rect.height) * 100;
+        updateColorUI();
+        tick();
+      });
+
+      document.querySelectorAll('.preset-item').forEach((btn) => {
+        btn.onclick = () => {
+          Object.assign(config, hexToHsv(btn.dataset.hex));
+          updateColorUI();
+          tick();
+        };
+      });
+
+      if (dom.hexInput) {
+        dom.hexInput.oninput = (e) => {
+          const val = e.target.value.replace(/[^0-9A-Fa-f]/g, '');
+          if (val.length === 6) {
+            Object.assign(config, hexToHsv(val));
+            updateColorUI();
+            tick();
+          }
+        };
+      }
+
+      const setupToggle = (el, key, callback) => {
+        if (!el) return;
+        el.onclick = () => {
+          el.classList.toggle('active');
+          config[key] = el.classList.contains('active');
+          if (callback) callback(config[key]);
+          saveConfig();
+          tick();
+        };
+      };
+
+      setupToggle(dom.toggle24h, 'use24h');
+      setupToggle(dom.toggleSeconds, 'showSeconds');
+      setupToggle(dom.toggleCountdown, 'isCountdown', (active) => {
+        if (dom.countdownDetail) dom.countdownDetail.classList.toggle('visible', active);
+      });
+
+      if (dom.cdMode) {
+        dom.cdMode.onchange = (e) => {
+          config.cdMode = e.target.value;
+          if (dom.valDaily) dom.valDaily.style.display = config.cdMode === 'daily' ? 'block' : 'none';
+          if (dom.valTarget) dom.valTarget.style.display = config.cdMode === 'target' ? 'block' : 'none';
+          saveConfig();
+          tick();
+        };
+      }
+
+      if (dom.valDaily) dom.valDaily.oninput = (e) => { config.dailyTime = e.target.value; saveConfig(); tick(); };
+      if (dom.valTarget) dom.valTarget.oninput = (e) => { config.targetDate = e.target.value; saveConfig(); tick(); };
+      if (dom.dateFormat) dom.dateFormat.onchange = (e) => { config.dateFormat = e.target.value; saveConfig(); tick(); };
+
+      const formatDisplay = (dateObj) => {
+        let h = dateObj.getHours();
+        const m = dateObj.getMinutes();
+        const s = dateObj.getSeconds();
+        let ampm = '';
+        if (!config.use24h) {
+          ampm = h >= 12 ? ' PM' : ' AM';
+          h = h % 12 || 12;
+        }
+        let timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        if (config.showSeconds) timeStr += `:${String(s).padStart(2, '0')}`;
+
+        const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const weeksFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const weeksCn = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        let dStr = '';
+        switch (config.dateFormat) {
+          case 'none':
+            dStr = '';
+            break;
+          case 'cn':
+            dStr = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+            break;
+          case 'zh-short':
+            dStr = `${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()} ${weeksCn[dateObj.getDay()]}`;
+            break;
+          case 'numeric':
+            dStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+            break;
+          case 'en-long':
+            dStr = `${weeksFull[dateObj.getDay()]}, ${monthsFull[dateObj.getMonth()]} ${dateObj.getDate()}`;
+            break;
+          case 'short':
+            dStr = `${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')} ${weeksCn[dateObj.getDay()]}`;
+            break;
+          case 'en':
+          default:
+            dStr = `${weeks[dateObj.getDay()]}, ${months[dateObj.getMonth()]} ${dateObj.getDate()}`;
+            break;
+        }
+
+        return { timeStr: timeStr + ampm, dateStr: dStr };
+      };
+
+      const tick = () => {
+        const now = new Date();
+        if (config.isCountdown) {
+          let target;
+          if (config.cdMode === 'daily') {
+            const [th, tm] = config.dailyTime.split(':').map(Number);
+            target = new Date(now);
+            target.setHours(th, tm, 0, 0);
+            if (now > target) target.setDate(target.getDate() + 1);
+          } else {
+            target = config.targetDate ? new Date(config.targetDate) : now;
+          }
+          const diff = Math.max(0, target - now);
+          const h = Math.floor(diff / 3600000);
+          const m = Math.floor((diff % 3600000) / 60000);
+          const s = Math.floor((diff % 60000) / 1000);
+          dom.timeDisplay.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}${config.showSeconds ? `:${String(s).padStart(2, '0')}` : ''}`;
+          const countdownDate = formatDisplay(now).dateStr;
+          dom.dateDisplay.innerText = countdownDate;
+        } else {
+          const { timeStr, dateStr } = formatDisplay(now);
+          dom.timeDisplay.innerText = timeStr;
+          dom.dateDisplay.innerText = dateStr;
+        }
+
+        const previewData = formatDisplay(now);
+        if (dom.previewTime) dom.previewTime.innerText = previewData.timeStr;
+        if (dom.previewDate) {
+          if (config.isCountdown) {
+            if (config.cdMode === 'daily') dom.previewDate.innerText = `每日 ${config.dailyTime}`;
+            else dom.previewDate.innerText = config.targetDate ? `目标 ${config.targetDate.replace('T', ' ')}` : '设置目标日期';
+          } else {
+            dom.previewDate.innerText = previewData.dateStr;
+          }
+        }
+      };
+
+      dom.clock.onclick = () => dom.modal.classList.add('active');
+      if (dom.btnDone) dom.btnDone.onclick = () => dom.modal.classList.remove('active');
+      if (dom.btnClose) dom.btnClose.onclick = () => dom.modal.classList.remove('active');
+      dom.modal.addEventListener('click', (e) => {
+        if (e.target === dom.modal) dom.modal.classList.remove('active');
+      });
+
+      loadConfig();
+      if (dom.toggle24h) dom.toggle24h.classList.toggle('active', config.use24h);
+      if (dom.toggleSeconds) dom.toggleSeconds.classList.toggle('active', config.showSeconds);
+      if (dom.toggleCountdown) dom.toggleCountdown.classList.toggle('active', config.isCountdown);
+      if (dom.countdownDetail) dom.countdownDetail.classList.toggle('visible', config.isCountdown);
+      if (dom.cdMode) dom.cdMode.value = config.cdMode;
+      if (dom.valDaily) dom.valDaily.value = config.dailyTime;
+      if (dom.valTarget) dom.valTarget.value = config.targetDate || '';
+      if (dom.dateFormat) dom.dateFormat.value = config.dateFormat;
+      updateColorUI();
+      setInterval(tick, 1000);
+      tick();
+    })();
+  </script>
+  <script>
+    (function() {
+      const card = document.querySelector('.parabola-card');
+      if (!card) return;
+
+      const descLink = card.querySelector('.parabola-card__link');
+      const refreshIcon = card.querySelector('.js-parabola-refresh');
+      const cycleBtn = card.querySelector('.parabola-card__arrow');
+
+      if (!descLink || !refreshIcon || !cycleBtn) return;
+
+      const state = {
+        headers: [],
+        rows: [],
+        items: [],
+        currentItemIndex: -1,
+        currentItem: '高赞'
+      };
+
+      const parseCSV = (text) => {
+        const rows = [];
+        let row = [];
+        let value = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < text.length; i += 1) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === '"' && inQuotes && next === '"') {
+            value += '"';
+            i += 1;
+            continue;
+          }
+
+          if (char === '"') {
+            inQuotes = !inQuotes;
+            continue;
+          }
+
+          if (char === ',' && !inQuotes) {
+            row.push(value);
+            value = '';
+            continue;
+          }
+
+          if ((char === '\n' || char === '\r') && !inQuotes) {
+            if (char === '\r' && next === '\n') {
+              i += 1;
+            }
+            row.push(value);
+            value = '';
+            if (row.length > 1 || row[0] !== '') {
+              rows.push(row);
+            }
+            row = [];
+            continue;
+          }
+
+          value += char;
+        }
+
+        if (value.length || row.length) {
+          row.push(value);
+          rows.push(row);
+        }
+
+        return rows;
+      };
+
+      const clampLink = () => {
+        const styles = getComputedStyle(descLink);
+        let lineHeight = parseFloat(styles.lineHeight);
+        if (!Number.isFinite(lineHeight)) {
+          const fontSize = parseFloat(styles.fontSize);
+          if (!Number.isFinite(fontSize)) return;
+          lineHeight = fontSize * 1.35;
+        }
+        const maxHeight = lineHeight * 3;
+        let text = descLink.textContent || '';
+        descLink.textContent = text;
+        if (descLink.scrollHeight <= maxHeight) return;
+        let left = 0;
+        let right = text.length;
+        let best = text;
+        while (left <= right) {
+          const mid = Math.floor((left + right) / 2);
+          descLink.textContent = `${text.slice(0, mid).trim()}...`;
+          if (descLink.scrollHeight > maxHeight) {
+            right = mid - 1;
+          } else {
+            best = descLink.textContent;
+            left = mid + 1;
+          }
+        }
+        descLink.textContent = best;
+      };
+
+      const updateLink = (row) => {
+        const titleIndex = state.headers.indexOf('title');
+        const urlIndex = state.headers.indexOf('url');
+        const title = titleIndex === -1 ? '' : (row[titleIndex] || '').trim();
+        const url = urlIndex === -1 ? '' : (row[urlIndex] || '').trim();
+
+        descLink.textContent = title || '暂无标题';
+        if (url) {
+          descLink.href = url;
+        } else {
+          descLink.href = 'https://www.zhihu.com/';
+        }
+        requestAnimationFrame(clampLink);
+      };
+
+      const updateCycleLabel = () => {
+        if (!state.items.length) {
+          cycleBtn.title = '切换标签';
+          cycleBtn.setAttribute('aria-label', '切换标签');
+          return;
+        }
+        const label = state.currentItem ? `当前为「${state.currentItem}」` : '切换标签';
+        cycleBtn.title = `${label} 点击切换`;
+        cycleBtn.setAttribute('aria-label', `${label}，点击切换`);
+      };
+
+      const pickRandomRow = () => {
+        if (!state.rows.length) return;
+        const itemIndex = state.headers.indexOf('item');
+        let candidates = state.rows.slice();
+
+        if (state.currentItem && itemIndex !== -1) {
+          candidates = candidates.filter((row) => (row[itemIndex] || '').trim() === state.currentItem);
+        }
+
+        if (!candidates.length) {
+          candidates = state.rows.slice();
+        }
+
+        const row = candidates[Math.floor(Math.random() * candidates.length)];
+        updateLink(row);
+      };
+
+      const cycleItem = () => {
+        if (!state.items.length) {
+          state.currentItem = null;
+          pickRandomRow();
+          return;
+        }
+        state.currentItemIndex = (state.currentItemIndex + 1) % state.items.length;
+        state.currentItem = state.items[state.currentItemIndex];
+        updateCycleLabel();
+        pickRandomRow();
+      };
+
+      const refresh = () => {
+        pickRandomRow();
+      };
+
+      descLink.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+
+      cycleBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        cycleItem();
+      });
+
+      refreshIcon.title = '点击切换';
+      refreshIcon.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        refresh();
+      });
+
+      refreshIcon.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          event.stopPropagation();
+          refresh();
+        }
+      });
+
+      fetch('assets/zhihu_questions.csv', { cache: 'no-cache' })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          return response.text();
+        })
+        .then((text) => {
+          const rows = parseCSV(text);
+          if (rows.length < 2) {
+            throw new Error('No rows found');
+          }
+
+          state.headers = rows[0];
+          state.rows = rows.slice(1).filter((row) => row.length);
+
+          const itemIndex = state.headers.indexOf('item');
+          if (itemIndex !== -1) {
+            const itemSet = new Set();
+            state.rows.forEach((row) => {
+              const item = (row[itemIndex] || '').trim();
+              if (item) itemSet.add(item);
+            });
+            state.items = Array.from(itemSet);
+            const defaultIndex = state.items.indexOf(state.currentItem);
+            state.currentItemIndex = defaultIndex === -1 ? -1 : defaultIndex;
+          }
+
+          updateCycleLabel();
+          pickRandomRow();
+        })
+        .catch((error) => {
+          descLink.textContent = `加载失败：${error}`;
+          descLink.href = 'https://www.zhihu.com/';
+        });
+    })();
+  </script>
+  <script>
+    (function() {
+      const sprite = document.querySelector('.parabola-card__sprite');
+      const spriteClip = document.querySelector('.parabola-card__sprite-clip');
+      const card = document.querySelector('.parabola-card');
+      const arrowBtn = document.querySelector('.parabola-card__arrow');
+      if (!sprite || !spriteClip || !card || !arrowBtn) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (prefersReducedMotion.matches) return;
+
+      const spriteBear = {
+        src: 'assets/action/splash-c56972c4.png',
+        columns: 10,
+        rows: 5,
+        totalFrames: 48,
+        fps: 18,
+        width: 130,
+        height: 110
+      };
+      const spriteLiukanshan = {
+        src: 'assets/action/liukanshan-6cbecb3b.png',
+        columns: 10,
+        rows: 3,
+        totalFrames: 30,
+        fps: 30,
+        width: 28,
+        height: 35,
+        offsetY: 74,
+        offsetX: -10
+      };
+
+      let frame = 0;
+      let rafId = null;
+      let autoTimeout = null;
+      let isAutoPlaying = false;
+      let lastTick = 0;
+      let stopAtFrame = null;
+      let currentSprite = spriteBear;
+
+      const applySprite = (config) => {
+        currentSprite = config;
+        sprite.style.backgroundImage = `url("${config.src}")`;
+        sprite.style.backgroundSize = `${config.columns * 100}% ${config.rows * 100}%`;
+        sprite.style.backgroundRepeat = 'no-repeat';
+        sprite.style.width = `${config.width}px`;
+        sprite.style.height = `${config.height}px`;
+        const offsetX = config.offsetX || 0;
+        const offsetY = config.offsetY || 0;
+        sprite.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      };
+
+      applySprite(spriteBear);
+      sprite.style.zIndex = '2';
+
+      const updateFrame = () => {
+        const col = frame % currentSprite.columns;
+        const row = Math.floor(frame / currentSprite.columns);
+        const posX = col * (100 / (currentSprite.columns - 1));
+        const posY = row * (100 / (currentSprite.rows - 1));
+        sprite.style.backgroundPosition = `${posX}% ${posY}%`;
+        frame = (frame + 1) % currentSprite.totalFrames;
+      };
+
+      const stop = () => {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        lastTick = 0;
+        stopAtFrame = null;
+      };
+
+      const hide = () => {
+        spriteClip.style.opacity = '0';
+        spriteClip.style.pointerEvents = 'none';
+      };
+
+      const show = () => {
+        spriteClip.style.opacity = '1';
+        spriteClip.style.pointerEvents = 'none';
+      };
+
+      const start = () => {
+        stop();
+        frame = 0;
+        updateFrame();
+        const step = (now) => {
+          if (!lastTick) lastTick = now;
+          const elapsed = now - lastTick;
+          if (elapsed >= 1000 / currentSprite.fps) {
+            lastTick = now;
+            updateFrame();
+            if (stopAtFrame !== null && frame === (stopAtFrame + 1) % currentSprite.totalFrames) {
+              stop();
+              return;
+            }
+          }
+          rafId = requestAnimationFrame(step);
+        };
+        rafId = requestAnimationFrame(step);
+      };
+
+      const playSegment = (config, startFrame, endFrame, onDone) => {
+        stop();
+        applySprite(config);
+        frame = startFrame % config.totalFrames;
+        stopAtFrame = endFrame % config.totalFrames;
+        updateFrame();
+        const step = (now) => {
+          if (!lastTick) lastTick = now;
+          const elapsed = now - lastTick;
+          if (elapsed >= 1000 / config.fps) {
+            lastTick = now;
+            updateFrame();
+            if (stopAtFrame !== null && frame === (stopAtFrame + 1) % config.totalFrames) {
+              stop();
+              if (onDone) onDone();
+              return;
+            }
+          }
+          rafId = requestAnimationFrame(step);
+        };
+        rafId = requestAnimationFrame(step);
+      };
+
+      const playOnceThenHide = () => {
+        isAutoPlaying = true;
+        show();
+        applySprite(spriteBear);
+        start();
+        const duration = Math.ceil((spriteBear.totalFrames / spriteBear.fps) * 1000);
+        if (autoTimeout) clearTimeout(autoTimeout);
+        autoTimeout = setTimeout(() => {
+          stop();
+          hide();
+          isAutoPlaying = false;
+          autoTimeout = null;
+        }, duration);
+      };
+
+      hide();
+      if (Math.random() < 0.05) {
+        playOnceThenHide();
+      }
+
+      card.addEventListener('mouseenter', () => {
+        if (autoTimeout) {
+          clearTimeout(autoTimeout);
+          autoTimeout = null;
+        }
+        isAutoPlaying = false;
+        show();
+        playSegment(spriteBear, 0, 30);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        stop();
+        if (!isAutoPlaying) hide();
+      });
+
+      arrowBtn.addEventListener('click', () => {
+        if (autoTimeout) {
+          clearTimeout(autoTimeout);
+          autoTimeout = null;
+        }
+        isAutoPlaying = false;
+        show();
+        playSegment(spriteBear, 31, spriteBear.totalFrames - 1, () => {
+          playSegment(spriteLiukanshan, 0, spriteLiukanshan.totalFrames - 1);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+/*
+Theme Name: odins-crow
+Author: Yevhen Miroshnychenko
+Author URI: https://www.linkedin.com/in/yevhen-miroshnychenko-13351b72/
+Description:
+Version: 1.0
+Text Domain: oc
+*/
+
+.wpcf7-response-output, .wpcf7-spinner{
+  display: none!important;
+}
+.intro__title.intro__title--static {
+  font-size: 56px;
+}
